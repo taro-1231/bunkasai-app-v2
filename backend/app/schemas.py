@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from datetime import datetime
 
 # テナント
 class TenantBase(BaseModel):
@@ -41,3 +42,30 @@ class LoginRequest(BaseModel):
     password: str
     tenant_id: str
     
+
+# ブース
+class BoothCreate(BaseModel):
+    booth_name: str
+    belong: str
+    location: str
+    summary: str
+    description_md: str | None
+    open_from: datetime | None
+    open_to: datetime | None
+
+# イベント
+class EventCreate(BaseModel):
+    event_name: str
+    location: str
+    start_at: datetime | None
+    end_at: datetime | None
+    description: str | None
+
+# お知らせ
+class AnnouncementCreate(BaseModel):
+    title: str
+    body: str
+
+# 写真板
+class PhotoCreate(BaseModel):
+    image_url: str

@@ -31,8 +31,7 @@ class Booth(Base):
     __tablename__ = "booths"
     id: Mapped[str] = mapped_column(String, primary_key=True, default=uuid_str)
     tenant_id: Mapped[str] = mapped_column(ForeignKey('tenants.id',ondelete='CASCADE'), index=True)
-    # slug: Mapped[str] = mapped_column(String, index=True)
-    name: Mapped[str] = mapped_column(String)
+    booth_name: Mapped[str] = mapped_column(String)
     belong: Mapped[str] = mapped_column(String)
     location: Mapped[str] = mapped_column(String)
     summary: Mapped[str] = mapped_column(Text)
@@ -46,9 +45,9 @@ class Event(Base):
     __tablename__ = "events"
     id: Mapped[str] = mapped_column(String, primary_key=True, default=uuid_str)
     tenant_id: Mapped[str] = mapped_column(ForeignKey('tenants.id',ondelete='CASCADE'), index=True)
-    title: Mapped[str] = mapped_column(String)
-    location: Mapped[str | None] = mapped_column(String)
-    start_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    event_name: Mapped[str] = mapped_column(String)
+    location: Mapped[str] = mapped_column(String)
+    start_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     end_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
 
@@ -61,8 +60,8 @@ class Announcement(Base):
     # pinned: Mapped[bool] = mapped_column(Boolean, default=False)
     published_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone=True))
 
-class PhotoBoard(Base):
-    __tablename__ = "photoboards"
+class Photo(Base):
+    __tablename__ = "photos"
     id: Mapped[str] = mapped_column(String, primary_key=True, default=uuid_str)
     tenant_id: Mapped[str] = mapped_column(ForeignKey('tenants.id',ondelete='CASCADE'), index=True)
     image_url: Mapped[str] = mapped_column(String)

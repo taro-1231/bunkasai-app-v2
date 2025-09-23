@@ -3,6 +3,7 @@ from app.db import get_db
 from sqlalchemy.orm import Session
 from app.models import User
 from app.schemas import LoginRequest
+from starlette.responses import Response
 
 from datetime import timedelta
 from jose import JWTError, jwt

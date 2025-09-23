@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Request
-from .routers import health, tenants, users, events, booths, auth
+from fastapi import FastAPI
+from .routers import health, tenants, users, events, booths, auth, announcements, photos
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from pathlib import Path
@@ -9,10 +9,13 @@ from .db import Base, engine
 app = FastAPI(title="bunkasai-app-API", version="0.1.0")
 app.include_router(health.router)
 app.include_router(tenants.router)
+app.include_router(auth.router)
+
 app.include_router(users.router)
 app.include_router(events.router)
 app.include_router(booths.router)
-app.include_router(auth.router)
+app.include_router(announcements.router)
+app.include_router(photos.router)
 
 # URIのサブドメインをstate.tenantに入れるミドルウェア。なければdefaultとなる
 # class TenantMiddleware(BaseHTTPMiddleware):
