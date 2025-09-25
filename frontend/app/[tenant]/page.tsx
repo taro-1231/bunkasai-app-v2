@@ -1,37 +1,32 @@
-export default async function Home(
-    {params}: {params: Promise<{tenant: string}>}) {
+import AnnouncementCard from "./_components/AnnouncementCard";
+
+interface Announcement {
+  id:number;
+  name:string;
+  desc:string;
+}
+
+export default async function announcements(
+  {params}: {params: Promise<{tenant: string}>}) {
     const { tenant }= await params;
-    
+    const announcements: Announcement[] = [
+      { id: 1, name: "Announcement 1", desc: "Announcement 1 description" },
+      { id: 2, name: "Announcement 2", desc: "Announcement 2 description" },
+      { id: 3, name: "Announcement 3", desc: "Announcement 3 description" },
+      { id: 4, name: "Announcement 4", desc: "Announcement 4 description" },
+    ];
     return (
-
-      // <div className="relative z-10 text-center text-white px-4 flex items-center justify-center h-full">
-      //     <div className="transform translate-y-16">
-      //       <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold mb-4 tracking-tight">
-      //         ぶんかさい
-      //       </h1>
-      //       <div className="text-lg md:text-2xl lg:text-3xl font-light opacity-90">
-      //         2024年度
-      //       </div>
-      //     </div>
-
-      //     <div>
-      //         <h1>{tenant}</h1>
-      //     </div>
-      // </div>
-
-      // <div className="relative z-10 text-center px-4 flex items-center justify-center h-full">
       <div>
-          
         <div className="text-8xl font-bold">
           <h1>{tenant} 文化祭</h1>
         </div>
-          <div>
-            アナウンス１
-          </div>
-          <div>
-            アナウンス２
-          </div>
-
+        <div className="text-4xl font-bold">
+          <h1>announcements </h1>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {announcements.map(a => <AnnouncementCard key={a.id} {...a} />)}
+        </div>
       </div>
     );
   }
+  

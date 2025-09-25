@@ -15,6 +15,7 @@ const Navigation = ({ tenant }: NavigationProps) => {
                     <Link href={`/${tenant}/events`}>Events</Link>
                     <Link href={`/${tenant}/booths`}>Booths</Link>
                     <Link href={`/${tenant}/photos`}>Photos</Link>
+                    <Link href={`/${tenant}/login`}>Login</Link>
                 </div>
             </div>
             
