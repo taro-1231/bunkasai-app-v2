@@ -1,4 +1,4 @@
-function BoothCard({ name, desc }: { name: string; desc: string }) {
+export default function BoothCard({ name, desc }: { name: string; desc: string }) {
     
     
     return (
@@ -12,4 +12,3 @@ function BoothCard({ name, desc }: { name: string; desc: string }) {
     );
   }
 
-  export default BoothCard;
