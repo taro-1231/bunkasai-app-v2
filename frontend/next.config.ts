@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  turbopack: {
+    root: __dirname, // プロジェクトルートを明示
+  },
 };
 
 export default nextConfig;
