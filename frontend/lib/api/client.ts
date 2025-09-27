@@ -21,8 +21,10 @@ export class ApiError extends Error {
   }
   
 
+  // /api/v2/tenants/{slug}/boothsとか
+// const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api/tenants";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000/api/v2/tenants";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api";
 
 type Options = {
     auth?: boolean;                 // 認証ヘッダーを付けるか（必要に応じて実装）
@@ -72,3 +74,11 @@ export async function apiFetch<T = unknown>(path: string, opts: Options = {}) {
   // 呼び出し元の<T>の型で返す
   return body as T;
 }
+
+export function getTenantFromBrowser(): string | null { 
+  if (typeof window === "undefined") 
+    return null; 
+  const { hostname, pathname } = window.location; 
+  // パス: /v1/tenants/foo/... → "foo" 
+  const m = pathname.match(/\/tenants\/([^/]+)/); 
+  return m ? m[1] : null; }

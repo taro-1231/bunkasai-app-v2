@@ -10,11 +10,11 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/register', //フロント側
-        destination: 'http://localhost:8000/api/register', //バックエンド側
+        destination: 'http://localhost:8000/api/v2/register', //バックエンド側
       },
       {
         source: '/api/tenants/:path*',
-        destination: 'http://localhost:8000/api/tenants/:path*',
+        destination: 'http://localhost:8000/api/v2/tenants/:path*',
       },
     ];
   },
