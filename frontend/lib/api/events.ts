@@ -1,4 +1,3 @@
-// lib/api/events.ts
 import { z } from "zod";
 import { apiFetch } from "./client";
 import { getTenantFromBrowser } from "./client";
