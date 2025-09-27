@@ -17,7 +17,7 @@ def get_all_announcements(tenant: Tenant = Depends(resolve_tenant), db: Session 
 
 @router.post('/')
 def create_announcement(body: AnnouncementCreate, tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    if user.role != 'staff':
+    if user.role != 'staff' or user.role != 'owner':
         raise HTTPException(status_code=403, detail="Forbidden")
     announcement = Announcement(
         title=body.title,
@@ -31,7 +31,7 @@ def create_announcement(body: AnnouncementCreate, tenant: Tenant = Depends(resol
 
 @router.delete('/{announcement_id}')
 def delete_announcement(announcement_id: str, tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    if user.role != 'staff':
+    if user.role != 'staff' or user.role != 'owner':
         raise HTTPException(status_code=403, detail="Forbidden")
     announcement = db.query(Announcement).filter(Announcement.id == announcement_id, Announcement.tenant_id == tenant.id).one_or_none()
     if not announcement:
