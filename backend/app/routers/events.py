@@ -18,7 +18,7 @@ def get_all_events(tenant: Tenant = Depends(resolve_tenant), db: Session = Depen
 
 @router.post('/')
 def create_event(body: EventCreate, tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    if user.role != 'staff':
+    if user.role != 'staff' or user.role != 'owner':
         raise HTTPException(status_code=403, detail="Forbidden")
     event = Event(
         event_name=body.event_name,
@@ -35,7 +35,7 @@ def create_event(body: EventCreate, tenant: Tenant = Depends(resolve_tenant), us
 
 @router.delete('/{event_id}')
 def delete_event(event_id: str, tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    if user.role != 'staff':
+    if user.role != 'staff' or user.role != 'owner':
         raise HTTPException(status_code=403, detail="Forbidden")
     event = db.query(Event).filter(Event.id == event_id, Event.tenant_id == tenant.id).one_or_none()
     if not event:

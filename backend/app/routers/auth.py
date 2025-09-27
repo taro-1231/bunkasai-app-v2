@@ -10,6 +10,8 @@ from jose import JWTError, jwt
 from datetime import datetime, timezone
 from fastapi.security import OAuth2PasswordBearer
 from starlette.status import HTTP_401_UNAUTHORIZED
+from app.routers.tenants import resolve_tenant
+from app.models import Tenant
 
 SECRET_KEY = "your_secret_key" #ひみつ
 ALGORITHM = "HS256"
@@ -48,7 +50,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         raise credentials_exception
 
 def authenticate_user(username:str, password:str, tenant_id:str, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.username == username, User.tenant_id == tenant_id).one
+    user = db.query(User).filter(User.username == username, User.tenant_id == tenant_id).one_or_none()
     if not user:
         return None
     if user.password_hash != password:
@@ -61,8 +63,8 @@ def authenticate_user(username:str, password:str, tenant_id:str, db: Session = D
 router = APIRouter(prefix='/api/v2/tenants/{slug}/auth')
 
 @router.post('/login')
-def login(body: LoginRequest, db: Session = Depends(get_db)):
-    user = authenticate_user(body.username, body.password, body.tenant_id, db)
+def login(body: LoginRequest, tenant: Tenant = Depends(resolve_tenant), db: Session = Depends(get_db)):
+    user = authenticate_user(body.username, body.password, tenant.id, db)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)

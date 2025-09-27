@@ -40,7 +40,7 @@ class TenantOwnerCreate(BaseModel):
 class LoginRequest(BaseModel):
     username: str
     password: str
-    tenant_id: str
+    # tenant_id: str
     
 
 # ブース
@@ -57,9 +57,9 @@ class BoothCreate(BaseModel):
 class EventCreate(BaseModel):
     event_name: str
     location: str
-    start_at: datetime | None
-    end_at: datetime | None
-    description: str | None
+    start_at: datetime | None = None
+    end_at: datetime | None = None
+    description: str | None = None
 
 # お知らせ
 class AnnouncementCreate(BaseModel):
