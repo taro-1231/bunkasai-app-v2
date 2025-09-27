@@ -32,10 +32,12 @@ type Options = {
     method?: string;
   };
 
-  export async function apiFetch<T = unknown>(path: string, opts: Options = {}) {
-    const headers = new Headers(opts.headers);
+export async function apiFetch<T = unknown>(path: string, opts: Options = {}) {
+  const headers = new Headers(opts.headers);
 
       // JSONをデフォルトに（FormDataのときは自動で外す）
+      // JSONのときはレスポンス(Accept)をJSONにして、
+      //GETのときはbodyないのでContent-Typeはいらない、POSTのときはContent-TypeをJSONにする
   const isForm = typeof FormData !== "undefined" && opts.body instanceof FormData;
   if (!isForm) {
     headers.set("Accept", "application/json");
@@ -50,6 +52,7 @@ type Options = {
   //   if (token) headers.set("Authorization", `Bearer ${token}`);
   // }
 
+  // 指定したオプションでAPIを呼び出す
   const res = await fetch(`${API_BASE}${path}`, {
     method: opts.method ?? (opts.body ? "POST" : "GET"),
     headers,
@@ -57,12 +60,15 @@ type Options = {
     cache: opts.cache ?? "no-store",
     credentials: "same-origin", // 同一オリジン（rewrite経由）ならCookie送受信OK
   });
-
+  //apiの戻り値であるレスポンスオブジェクトをでcontent-typeがJSONならjson()でパースし、それ以外はtext()でテキストにする
   const contentType = res.headers.get("content-type") || "";
   const body = contentType.includes("application/json")
     ? await res.json().catch(() => null)
     : await res.text();
 
+  //apiの戻り値であるレスポンスオブジェクトのstatusが400以上ならApiErrorをthrow
   if (!res.ok) throw new ApiError(res.status, body);
+
+  // 呼び出し元の<T>の型で返す
   return body as T;
 }
