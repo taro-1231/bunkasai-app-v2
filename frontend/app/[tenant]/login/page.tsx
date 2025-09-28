@@ -1,5 +1,5 @@
-import { LoginResponseModel } from "@/lib/api/login";
-import { apilogin } from "@/lib/api/login";
+import { apime, LoginResponseModel } from "@/lib/api/auth";
+import { apilogin } from "@/lib/api/auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 export default async function login(
     {params}: {params: Promise<{tenant: string}>}) {
       const { tenant }= await params;
+      const user = await apime(tenant);
+      console.log('user',user);
 
       async function loginAction(formData: FormData): Promise<void> {
         'use server';
@@ -14,12 +16,13 @@ export default async function login(
         const username = formData.get('username') as string;
         const password = formData.get('password') as string;
         const login_token = await apilogin(tenant, { username, password });
+        console.log('login_token',login_token);
 
         if (login_token) {
           const jar = await cookies();
           jar.set('access_token', login_token.access_token,{httpOnly: true, secure: true, maxAge: 60 * 60 * 24 * 7,path: '/',sameSite: 'lax'});
 
-          redirect(`/${tenant}`);
+          redirect(`/${tenant}/maintenance`);
         }
 
         // console.log('login_token',login_token);
