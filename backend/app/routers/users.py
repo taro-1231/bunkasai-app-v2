@@ -3,7 +3,7 @@ from app.db import get_db
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from app.models import User, Tenant
-from app.schemas import UserCreate
+from app.schemas import UserCreate, UserRead
 from app.routers.tenants import resolve_tenant
 from app.routers.auth import get_current_user
 
@@ -15,10 +15,13 @@ def get_all_users(tenant: Tenant = Depends(resolve_tenant), db: Session = Depend
     users = db.query(User).filter(User.tenant_id == tenant.id).all()
     return users
 
-@router.post('/')
+@router.post('/', response_model=UserRead)
 def create_user(body: UserCreate, tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    if user.role != 'owner':
+    if user.role == 'owner':
+        pass
+    else:
         raise HTTPException(status_code=403, detail="Forbidden")
+    print('create_user!!!')
     user = User(
         username=body.username,
         password_hash=body.password,
@@ -33,7 +36,9 @@ def create_user(body: UserCreate, tenant: Tenant = Depends(resolve_tenant), user
 
 @router.delete('/{user_id}')
 def delete_user(user_id: str, tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    if user.role != 'owner':
+    if user.role == 'owner':
+        pass
+    else:
         raise HTTPException(status_code=403, detail="Forbidden")
     user = db.query(User).filter(User.id == user_id, User.tenant_id == tenant.id).one_or_none()
     if not user:

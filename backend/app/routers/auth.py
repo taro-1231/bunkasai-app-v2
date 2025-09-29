@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from app.db import get_db
 from sqlalchemy.orm import Session
 from app.models import User
-from app.schemas import LoginRequest
+from app.schemas import LoginRequest, UserRead
 from starlette.responses import Response
 
 from datetime import timedelta
@@ -31,6 +31,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 #これを依存関数にすることで、「ユーザー登録してない」、「有効期限切れ」とかをチェックできる
+# これを依存関数にしてuserに入れることで,HTTPリクエストのヘッダーにtokenが入っているならそのuserを取得できる
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     credentials_exception = HTTPException(
         status_code=HTTP_401_UNAUTHORIZED,
@@ -74,7 +75,16 @@ def login(body: LoginRequest, tenant: Tenant = Depends(resolve_tenant), db: Sess
         )
     return {"access_token": access_token, "token_type": "bearer"}
 
+# つかわないかな
 @router.post('/logout')
 def logout(response: Response):
     response.delete_cookie(key="access_token")
+    print("Logged out successfully")
     return {"message": "Logged out successfully"}
+
+
+@router.get('/me', response_model=UserRead)
+def me(tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user)):
+    
+    print('user_bk',user);
+    return user

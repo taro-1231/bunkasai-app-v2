@@ -1,6 +1,7 @@
 from uuid import uuid4
 from .db import Base
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import func
 from sqlalchemy import Column, String, Text, DateTime, Boolean, ForeignKey
 from datetime import datetime, timezone
 
@@ -58,7 +59,7 @@ class Announcement(Base):
     title: Mapped[str] = mapped_column(String)
     body: Mapped[str] = mapped_column(Text)
     # pinned: Mapped[bool] = mapped_column(Boolean, default=False)
-    published_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone=True))
+    published_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc),nullable=False)
 
 class Photo(Base):
     __tablename__ = "photos"

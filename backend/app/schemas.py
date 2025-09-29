@@ -18,15 +18,17 @@ class TenantRead(TenantBase):
 # ユーザー
 class UserBase(BaseModel):
     username: str
-    password: str
+    
 
 class UserCreate(UserBase):
     role: str
     belong: str
+    password: str
 
 
 class UserRead(UserBase):
-
+    role: str
+    belong: str
     class Config:
         from_attributes = True
 

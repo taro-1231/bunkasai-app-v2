@@ -18,7 +18,11 @@ def get_all_booths(tenant: Tenant = Depends(resolve_tenant), db: Session = Depen
 
 @router.post('/')
 def create_booth(body: BoothCreate, tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    if user.role != 'vendor' or user.role != 'owner':
+    print(body)
+
+    if user.role == 'vendor' or user.role == 'owner':
+        pass
+    else:
         raise HTTPException(status_code=403, detail="Forbidden")
     booth = Booth(
         booth_name=body.booth_name,
@@ -30,6 +34,7 @@ def create_booth(body: BoothCreate, tenant: Tenant = Depends(resolve_tenant), us
         open_to=body.open_to,
         tenant_id=tenant.id
     )
+    print(booth)
     db.add(booth)
     db.commit()
     db.refresh(booth)
@@ -37,7 +42,9 @@ def create_booth(body: BoothCreate, tenant: Tenant = Depends(resolve_tenant), us
 
 @router.delete('/{booth_id}')
 def delete_booth(booth_id: str, tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    if user.role != 'vendor' or user.role != 'owner':
+    if user.role == 'vendor' or user.role == 'owner':
+        pass
+    else:
         raise HTTPException(status_code=403, detail="Forbidden")
     booth = db.query(Booth).filter(Booth.id == booth_id, Booth.tenant_id == tenant.id).one_or_none()
     if not booth:
