@@ -4,7 +4,7 @@
 //opts:Options = {} は optsが渡されないときに{}をデフォルト値として使う
 
 // import { cookies } from "next/headers";
-
+import { redirect } from "next/navigation";
 // <T>は戻り値の型の指定だが、いったん何が来てもOKというもの。
 // 何が返ってくるかわからない時や返ってくるJSONが大きい時は書ききれないから<T>とする。
 //promise<T>は非同期処理で、呼び出しもとで指定されたTの型で返すことを約束する。
@@ -84,6 +84,9 @@ export async function apiFetch<T = unknown>(path: string, opts: Options = {}) {
   // console.log('body', body);
 
   //apiの戻り値であるレスポンスオブジェクトのstatusが400以上ならApiErrorをthrow
+  if (res.status === 404){
+    redirect('/register');
+  }
   if (!res.ok) throw new ApiError(res.status, body);
 
   // 呼び出し元の<T>の型で返す
