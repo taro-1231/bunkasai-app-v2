@@ -2,20 +2,19 @@
 
 import { useState } from "react";
 // import { useRouter } from "next/navigation";
-import { createUserAction } from "@/lib/modalAction/action";
-import { useRouter } from "next/navigation";
+import { createBoothAction } from "@/lib/modalAction/action";
 
-export default function CreateUserModal({ tenant }: { tenant: string }) {
+export default function CreateBoothModal({ tenant }: { tenant: string }) {
   const [open, setOpen] = useState(false);
   type Role = "owner" | "vender" | "staff";
 //   const [loading, setLoading] = useState(false);
 //   const [err, setErr] = useState<string | null>(null);
 //   const router = useRouter();
-  const router = useRouter();
+
   async function onSubmit(formData: FormData) {
-    const res = await createUserAction(tenant, formData);
+    const res = await createBoothAction(tenant, formData);
+    // console.log('res',res);
     setOpen(false);
-    router.refresh();
     //     const res = await createUserAction();
 //     console.log('res',res);
   }
@@ -26,7 +25,7 @@ export default function CreateUserModal({ tenant }: { tenant: string }) {
         onClick={() => setOpen(true)}
         className="rounded-lg border px-4 py-2 hover:bg-gray-50"
       >
-        + Create User
+        + Create Booth
       </button>
 
       {open && (
@@ -41,7 +40,7 @@ export default function CreateUserModal({ tenant }: { tenant: string }) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Create User</h2>
+              <h2 className="text-lg font-semibold">Create Booth</h2>
               <button onClick={() => setOpen(false)} aria-label="Close" className="p-1">
                 ✕
               </button>
@@ -49,26 +48,39 @@ export default function CreateUserModal({ tenant }: { tenant: string }) {
 
             <form action={onSubmit} className="space-y-4">
               <div>
-                <label className="mb-1 block text-sm">Username</label>
-                <input name="username" required className="w-full rounded border px-3 py-2" />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-sm">Password</label>
-                <input type="password" name="password" required className="w-full rounded border px-3 py-2" />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-sm">Role</label>
-                <select name="role" className="w-full rounded border px-3 py-2" defaultValue="staff">
-                  <option value="vender">vender</option>
-                  <option value="staff">staff</option>
-                </select>
+                <label className="mb-1 block text-sm">Booth Name</label>
+                <input name="booth_name" required className="w-full rounded border px-3 py-2" />
               </div>
 
               <div>
                 <label className="mb-1 block text-sm">Belong</label>
                 <input type="text" name="belong" required className="w-full rounded border px-3 py-2" />
+              </div>
+
+
+              <div>
+                <label className="mb-1 block text-sm">Location</label>
+                <input type="text" name="location" required className="w-full rounded border px-3 py-2" />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm">Summary</label>
+                <input type="text" name="summary" required className="w-full rounded border px-3 py-2" />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm">Open from</label>
+                <input type="datetime-local" name="open_from"  className="w-full rounded border px-3 py-2" />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm">Open to</label>
+                <input type="datetime-local" name="open_to"  className="w-full rounded border px-3 py-2" />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm">Description md</label>
+                <input type="text" name="description_md"  className="w-full rounded border px-3 py-2" />
               </div>
 
               {/* {err && <p className="text-sm text-red-600">{err}</p>} */}

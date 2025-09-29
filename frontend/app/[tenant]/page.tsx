@@ -1,20 +1,17 @@
 import AnnouncementCard from "./_components/AnnouncementCard";
+import { listAnnouncements } from "@/lib/api/announcements";
 
 interface Announcement {
-  id:number;
-  name:string;
-  desc:string;
+  id:string;
+  title:string;
+  body:string;
 }
 
 export default async function announcements(
   {params}: {params: Promise<{tenant: string}>}) {
     const { tenant }= await params;
-    const announcements: Announcement[] = [
-      { id: 1, name: "Announcement 1", desc: "Announcement 1 description" },
-      { id: 2, name: "Announcement 2", desc: "Announcement 2 description" },
-      { id: 3, name: "Announcement 3", desc: "Announcement 3 description" },
-      { id: 4, name: "Announcement 4", desc: "Announcement 4 description" },
-    ];
+    // const announcements: Announcement
+    const announcements = await listAnnouncements(tenant);
     return (
       <div>
         <div className="text-8xl font-bold">
@@ -24,7 +21,7 @@ export default async function announcements(
           <h1>announcements </h1>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {announcements.map(a => <AnnouncementCard key={a.id} {...a} />)}
+          {announcements.map((a: Announcement) => <AnnouncementCard key={a.id} title={a.title} body={a.body} />)}
         </div>
       </div>
     );

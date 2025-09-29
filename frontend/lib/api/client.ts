@@ -3,6 +3,8 @@
 // ??はnullやundefinedの場合のデフォルト値
 //opts:Options = {} は optsが渡されないときに{}をデフォルト値として使う
 
+import { cookies } from "next/headers";
+
 // <T>は戻り値の型の指定だが、いったん何が来てもOKというもの。
 // 何が返ってくるかわからない時や返ってくるJSONが大きい時は書ききれないから<T>とする。
 //promise<T>は非同期処理で、呼び出しもとで指定されたTの型で返すことを約束する。
@@ -36,6 +38,18 @@ type Options = {
 
 export async function apiFetch<T = unknown>(path: string, opts: Options = {}) {
   const headers = new Headers(opts.headers);
+
+  // try{
+  //   const token = (await cookies()).get("access_token")?.value;
+  //   if (!token) {
+  //       return null;
+  //   }
+  //   headers.set("Authorization", `Bearer ${token}`);
+  // }catch(error){
+  //   console.error('error',error);
+  //   return null;
+  // }
+
 
       // JSONをデフォルトに（FormDataのときは自動で外す）
       // JSONのときはレスポンス(Accept)をJSONにして、

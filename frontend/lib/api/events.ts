@@ -1,6 +1,8 @@
+'use server';
 import { z } from "zod";
 import { apiFetch } from "./client";
 import { getTenantFromBrowser } from "./client";
+import { cookies } from "next/headers";
 
 // zodは型定義とバリデーションを行うためのライブラリ
 const EventSchema = z.object({
@@ -8,8 +10,8 @@ const EventSchema = z.object({
   // tenant: z.string(),
   event_name: z.string(),
   location: z.string(),
-  start_at: z.coerce.date().optional(),
-  end_at: z.coerce.date().optional(),
+  start_at: z.coerce.string().optional(),
+  end_at: z.coerce.string().optional(),
   description: z.string().optional(),
 });
 export type EventModel = z.infer<typeof EventSchema>;
@@ -37,15 +39,36 @@ export async function getEvent(tenant: string, id: string | number) {
   // return ev;
 }
 
+const createEventSchema = z.object({
+  // id: z.string(),
+  // tenant: z.string(),
+  event_name: z.string(),
+  location: z.string(),
+  start_at: z.coerce.string().optional(),
+  end_at: z.coerce.string().optional(),
+  description: z.string().optional(),
+});
+export type createEventModel = z.infer<typeof createEventSchema>;
+
 export async function createEvent(
   tenant: string,
-  payload: Omit<EventModel, "id" | "tenant">
+  payload: createEventModel
 ) {
-  const data = await apiFetch<unknown>(`/${tenant}/events`, {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-  const ev = EventSchema.parse(data);
-  // if (ev.tenant !== tenant) throw new Error("Cross-tenant data detected");
-  // return ev;
+  try{
+    const token = (await cookies()).get("access_token")?.value;
+    if (!token) {
+      return null;
+    }
+    const data = await apiFetch(`/${tenant}/events`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+    return data;
+  }catch(error){
+    console.error('error',error);
+    return null;
+  }
 }

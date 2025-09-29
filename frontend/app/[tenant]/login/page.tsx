@@ -1,3 +1,4 @@
+// 'use server';
 import { apime, LoginResponseModel } from "@/lib/api/auth";
 import { apilogin } from "@/lib/api/auth";
 import { cookies } from "next/headers";

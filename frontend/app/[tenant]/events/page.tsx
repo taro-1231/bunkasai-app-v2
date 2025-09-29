@@ -26,7 +26,14 @@ export default async function events(
           <h1>events </h1>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {events.map(e => <EventCard key={e.id} event_name={e.event_name} location={e.location} start_at={e.start_at?.toISOString() ?? ""} end_at={e.end_at?.toISOString() ?? ""} description={e.description ?? ""} />)}
+          {events.map(e => 
+          <EventCard 
+          key={e.id} 
+          event_name={e.event_name} 
+          location={e.location} 
+          start_at={e.start_at ? new Date(e.start_at).toISOString() : ""} 
+          end_at={e.end_at ? new Date(e.end_at).toISOString() : ""} 
+          description={e.description ?? ""} />)}
         </div>
       </div>
     );
