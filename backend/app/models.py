@@ -65,5 +65,6 @@ class Photo(Base):
     __tablename__ = "photos"
     id: Mapped[str] = mapped_column(String, primary_key=True, default=uuid_str)
     tenant_id: Mapped[str] = mapped_column(ForeignKey('tenants.id',ondelete='CASCADE'), index=True)
-    image_url: Mapped[str] = mapped_column(String)
-    published_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone=True))
+    image_root: Mapped[str] = mapped_column(String)
+    published_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc),nullable=False)
+    ext: Mapped[str] = mapped_column(String)

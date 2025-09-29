@@ -9,7 +9,7 @@ export default async function login(
     {params}: {params: Promise<{tenant: string}>}) {
       const { tenant }= await params;
       const user = await apime(tenant);
-      console.log('user',user);
+      // console.log('user',user);
 
       async function loginAction(formData: FormData): Promise<void> {
         'use server';
@@ -17,7 +17,7 @@ export default async function login(
         const username = formData.get('username') as string;
         const password = formData.get('password') as string;
         const login_token = await apilogin(tenant, { username, password });
-        console.log('login_token',login_token);
+        // console.log('login_token',login_token);
 
         if (login_token) {
           const jar = await cookies();

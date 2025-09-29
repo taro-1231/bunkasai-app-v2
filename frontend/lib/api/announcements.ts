@@ -18,7 +18,7 @@ export async function listAnnouncements(tenant: string | null) {
     tenant = getTenantFromBrowser();
 
   const data = await apiFetch<unknown>(`/${tenant}/announcements`);
-  // console.log(data);
+  // console.log('datadata',data);
   const arr = z.array(AnnouncementSchema).parse(data);
   // 念のため交差テナント混入を検知 
   //一旦後で

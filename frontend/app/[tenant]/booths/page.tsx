@@ -28,6 +28,7 @@ export default async function booths(
     //   { id: 4, name: "Booth 4",location: "Booth 4 location",belong: "Booth 4 belong",summary: "Booth 4 summary",open_from: "Booth 4 open_from",open_to: "Booth 4 open_to",desc: "Booth 4 description" },
     // ];
     const booths = await listBooths(tenant);
+  
     return (
       <div>
         <div className="text-4xl font-bold">

@@ -34,8 +34,10 @@ class UserRead(UserBase):
 
 # テナント、ユーザー
 class TenantOwnerCreate(BaseModel):
-    tenant: TenantCreate
-    owner: UserBase
+    tenant: str
+    tenant_slug: str
+    owner: str
+    password: str
     email: EmailStr
 
 
@@ -71,3 +73,12 @@ class AnnouncementCreate(BaseModel):
 # 写真板
 class PhotoCreate(BaseModel):
     image_url: str
+
+class PhotoRead(BaseModel):
+    id: str
+    image_root: str
+    published_at: datetime
+    ext: str
+    
+    class Config:
+        from_attributes = True

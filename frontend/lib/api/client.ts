@@ -3,7 +3,7 @@
 // ??はnullやundefinedの場合のデフォルト値
 //opts:Options = {} は optsが渡されないときに{}をデフォルト値として使う
 
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 
 // <T>は戻り値の型の指定だが、いったん何が来てもOKというもの。
 // 何が返ってくるかわからない時や返ってくるJSONが大きい時は書ききれないから<T>とする。
@@ -81,6 +81,7 @@ export async function apiFetch<T = unknown>(path: string, opts: Options = {}) {
   const body = contentType.includes("application/json")
     ? await res.json().catch(() => null)
     : await res.text();
+  // console.log('body', body);
 
   //apiの戻り値であるレスポンスオブジェクトのstatusが400以上ならApiErrorをthrow
   if (!res.ok) throw new ApiError(res.status, body);

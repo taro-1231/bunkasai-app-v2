@@ -1,7 +1,9 @@
+'use server';
 import { createUser } from "../api/users";
 import { createEvent } from "../api/events";
 import { createAnnouncement } from "../api/announcements";
 import { createBooth } from "../api/booths";
+import { postPhoto } from "../api/photos";
 
 function toDateOrUndef(v: FormDataEntryValue | null): Date | undefined {
     if (typeof v !== "string" || v.trim() === "") return undefined; // null/空文字は undefined に
@@ -76,5 +78,22 @@ export async function createBoothAction(tenant: string, formData: FormData) {
     } catch (error) {
       console.error('createBoothAction error:', error);
       return {error: 'createBoothAction error:' + error};
+    }
+}
+
+export async function postPhotoAction(tenant: string, file: File) {
+    // console.log('postPhotoAction called with file:', file);
+    
+    const form = new FormData();
+    form.append('file', file, file.name);
+    // console.log('FormData created with file:', file.name);
+    
+    try {
+        const photo = await postPhoto(tenant, form);
+        // console.log('photo', photo);
+        return photo;
+    } catch (error) {
+        console.error('postPhotoAction error:', error);
+        return {error: 'postPhotoAction error:' + error};
     }
 }

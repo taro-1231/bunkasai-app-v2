@@ -60,7 +60,7 @@ export type SessionUserModelResponse = {
 }
 export async function apime(tenant: string): Promise<SessionUserModel | null> {
   // let res : Response;
-  let res : SessionUserModel;
+  let res : SessionUserModel | null;
   try{
     const token = (await cookies()).get("access_token")?.value;
     // console.log('token',token);
@@ -76,16 +76,18 @@ export async function apime(tenant: string): Promise<SessionUserModel | null> {
             "Accept": "application/json"
         },  
     });
-  }catch(error){
-    console.error('error',error);
+  }catch(e){
+    console.error('error',e);
+    // console.log('エラー');
     return null;
   }
-  // console.log('resres',res);
-    // console.log('resres',res);
+  
+    // console.log('エラー出ない');
     // user = SessionUserModelResponse.parse(await res.json());
-  if(!res){
-      return null;
-  }
+  
+  // if(!res){
+  //     return null;
+  // }
   return res;
 }
 

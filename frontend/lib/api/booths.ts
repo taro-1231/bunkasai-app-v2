@@ -73,7 +73,7 @@ export async function createBooth(
     //   console.error("[booths upstream]", data.status, text); // ← ここに detail が出る
     //   throw new Error(text);
     // }
-    console.log('data',data);
+    // console.log('data',data);
     // return data;
     const booth = createBoothSchema.parse(data);
     return booth;

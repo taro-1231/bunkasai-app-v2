@@ -45,7 +45,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         role = payload.get("role")
         user = db.query(User).filter(User.id == user_id, User.tenant_id == tenant_id).one_or_none()
         if user is None:
-            raise credentials_exception
+            return credentials_exception
         return user
     except JWTError:
         raise credentials_exception
@@ -85,6 +85,6 @@ def logout(response: Response):
 
 @router.get('/me', response_model=UserRead)
 def me(tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user)):
-    
-    print('user_bk',user);
+    if user is None:
+        return None
     return user

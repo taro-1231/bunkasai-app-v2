@@ -17,14 +17,14 @@ def resolve_tenant(slug: str, db: Session = Depends(get_db)):
 
 @router.post('/')#, response_model=TenantRead)
 def register(body: TenantOwnerCreate, db: Session = Depends(get_db)):
-    tenant = Tenant(slug=body.tenant.slug, school_name=body.tenant.school_name)
+    tenant = Tenant(slug=body.tenant_slug, school_name=body.tenant)
     db.add(tenant)
     db.commit()
     db.refresh(tenant)
 
     owner = User(
-    username=body.owner.username,
-    password_hash=body.owner.password, #ハッシュ化はあとで
+    username=body.owner,
+    password_hash=body.password, #ハッシュ化はあとで
     email=body.email,
     role='owner',
     belong='owner',
@@ -33,7 +33,7 @@ def register(body: TenantOwnerCreate, db: Session = Depends(get_db)):
     db.add(owner)
     db.commit()
     db.refresh(owner)
-    return tenant, owner
+    return {"tenant": tenant, "owner": owner}
 
 @router.get('/{tenant_id}')
 def get_tenant(tenant_id: str):
