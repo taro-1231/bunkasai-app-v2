@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+const base = process.env.NEXT_PUBLIC_API_BASE;
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -10,11 +11,11 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/register', //フロント側
-        destination: 'http://localhost:8000/api/v2/register', //バックエンド側
+        destination: `${base}/api/v2/register`, //バックエンド側
       },
       {
         source: '/api/tenants/:path*',
-        destination: 'http://localhost:8000/api/v2/tenants/:path*',
+        destination: `${base}/api/v2/tenants/:path*`,
       },
     ];
   },

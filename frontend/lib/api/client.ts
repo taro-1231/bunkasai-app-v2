@@ -97,6 +97,7 @@ export function getTenantFromBrowser(): string | null {
   if (typeof window === "undefined") 
     return null; 
   const { hostname, pathname } = window.location; 
-  // パス: /v1/tenants/foo/... → "foo" 
-  const m = pathname.match(/\/tenants\/([^/]+)/); 
+  // const m = pathname.match(/\/tenants\/([^/]+)/); 
+  // パス: /tenant/foo/... → "foo" 
+  const m = pathname.match(/^\/([^/]+)/); 
   return m ? m[1] : null; }
