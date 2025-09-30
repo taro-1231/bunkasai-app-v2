@@ -26,6 +26,7 @@ from app.config import MEDIA_ROOT
 router = APIRouter(prefix='/api/v2/tenants/{slug}/photos')
 
 # MEDIA_ROOT = Path(os.getenv("MEDIA_ROOT", "./media")).resolve()
+MEDIA_ROOT = Path(MEDIA_ROOT).resolve()
 
 async def save_upload(file: UploadFile, dest_path: str) -> None:
     dest_path.parent.mkdir(parents=True, exist_ok=True)
@@ -57,6 +58,7 @@ def get_media_src(request: Request, stored_path: str | None) -> str | None:
 
 @router.post('/')
 async def create_photo(file: UploadFile = File(...), tenant: Tenant = Depends(resolve_tenant), db: Session = Depends(get_db)):
+    print('root',MEDIA_ROOT)
     await save_upload(file, MEDIA_ROOT / file.filename)
     photo = Photo(
         image_root=f"/media/{file.filename}",

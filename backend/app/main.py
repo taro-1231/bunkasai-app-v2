@@ -37,8 +37,10 @@ app.mount("/backend/media", StaticFiles(directory="media"), name="backend-media"
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
-    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1|192\.168\.[0-9]{1,3}\.[0-9]{1,3}|([a-zA-Z0-9-]+\.)?(yourfest\.app|lvh\.me))(\:[0-9]+)?$",
+    allow_origins=[
+        ALLOWED_ORIGINS,
+    ],
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1|192\.168\.[0-9]{1,3}\.[0-9]{1,3}|(yourfest\.app|lvh\.me))(\:[0-9]+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

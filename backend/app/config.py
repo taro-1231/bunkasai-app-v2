@@ -1,6 +1,6 @@
 import os
 
-DB_PATH = DB_PATH = os.getenv("FEST_DB_PATH", os.path.join(os.path.dirname(__file__), "fest.db"))
+DB_PATH = os.getenv("DATABASE_PATH", os.path.join(os.path.dirname(__file__), "fest.db"))
 SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 MEDIA_ROOT = os.getenv("MEDIA_ROOT", "./media")

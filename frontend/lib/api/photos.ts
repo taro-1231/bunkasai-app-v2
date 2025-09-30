@@ -50,14 +50,14 @@ export async function postPhoto(
   formData: FormData
 ) {
   try{
-    const token = (await cookies()).get("access_token")?.value;
-    if (!token) {
-      return null;
-    }
+    // const token = (await cookies()).get("access_token")?.value;
+    // if (!token) {
+    //   return null;
+    // }
     const data = await apiFetch<unknown>(`/${tenant}/photos/`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${token}`,
+        // "Authorization": `Bearer ${token}`,
         // Content-TypeはFormDataの場合自動でmultipart/form-dataが設定される
       },
       body: formData,
