@@ -19,12 +19,13 @@ import zipfile
 from fastapi.responses import StreamingResponse
 from fastapi import Request
 from urllib.parse import urljoin
+from app.config import MEDIA_ROOT
 
 
 
 router = APIRouter(prefix='/api/v2/tenants/{slug}/photos')
 
-MEDIA_ROOT = Path(os.getenv("MEDIA_ROOT", "./media")).resolve()
+# MEDIA_ROOT = Path(os.getenv("MEDIA_ROOT", "./media")).resolve()
 
 async def save_upload(file: UploadFile, dest_path: str) -> None:
     dest_path.parent.mkdir(parents=True, exist_ok=True)

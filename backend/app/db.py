@@ -1,9 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 import os
+from .config import SQLALCHEMY_DATABASE_URL
 
-DB_PATH = DB_PATH = os.getenv("FEST_DB_PATH", os.path.join(os.path.dirname(__file__), "fest.db"))
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
+# DB_PATH = DB_PATH = os.getenv("FEST_DB_PATH", os.path.join(os.path.dirname(__file__), "fest.db"))
+# SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 # engineはDBへの接続情報をもつオブジェクト
 #SessionLocalはDBへの接続を実際に管理する

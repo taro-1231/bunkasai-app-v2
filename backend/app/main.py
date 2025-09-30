@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 from .db import Base, engine
 from fastapi.staticfiles import StaticFiles
+from .config import ALLOWED_ORIGINS
 
 app = FastAPI(title="bunkasai-app-API", version="0.1.0")
 app.include_router(health.router)
@@ -36,12 +37,7 @@ app.mount("/backend/media", StaticFiles(directory="media"), name="backend-media"
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://lvh.me:3000",
-        "http://bunkasai.app:3000",
-    ],
+    allow_origins=ALLOWED_ORIGINS,
     allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1|192\.168\.[0-9]{1,3}\.[0-9]{1,3}|([a-zA-Z0-9-]+\.)?(yourfest\.app|lvh\.me))(\:[0-9]+)?$",
     allow_credentials=True,
     allow_methods=["*"],

@@ -9,6 +9,7 @@ router = APIRouter(prefix='/api/v2/tenants')
 
 # URLのslugからtenantを取得する
 def resolve_tenant(slug: str, db: Session = Depends(get_db)):
+    # print(f"Looking for tenant with slug: {slug}")
     tenant = db.query(Tenant).filter(Tenant.slug == slug).one_or_none()
     if not tenant:
         raise HTTPException(status_code=404, detail="Tenant not found")
