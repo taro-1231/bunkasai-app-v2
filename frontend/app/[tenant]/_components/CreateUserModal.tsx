@@ -26,7 +26,7 @@ export default function CreateUserModal({ tenant }: { tenant: string }) {
         onClick={() => setOpen(true)}
         className="rounded-lg border px-4 py-2 hover:bg-gray-50"
       >
-        + Create User
+        Create User
       </button>
 
       {open && (

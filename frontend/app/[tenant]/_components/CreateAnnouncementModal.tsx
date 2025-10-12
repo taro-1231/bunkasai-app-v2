@@ -25,7 +25,7 @@ export default function CreateAnnouncementModal({ tenant }: { tenant: string }) 
         onClick={() => setOpen(true)}
         className="rounded-lg border px-4 py-2 hover:bg-gray-50"
       >
-        + Create Announcement
+        Create Announcement
       </button>
 
       {open && (
@@ -46,7 +46,7 @@ export default function CreateAnnouncementModal({ tenant }: { tenant: string }) 
               </button>
             </div>
 
-            <form action={onSubmit} className="space-y-4">
+            <form action={onSubmit} id="create-announcement-form" className="space-y-4">
               <div>
                 <label className="mb-1 block text-sm">Title</label>
                 <input name="title" required className="w-full rounded border px-3 py-2" />
@@ -55,7 +55,7 @@ export default function CreateAnnouncementModal({ tenant }: { tenant: string }) 
 
               <div>
                 <label className="mb-1 block text-sm">Body</label>
-                <input type="text" name="body" required className="w-full rounded border px-3 py-2" />
+                <textarea name="body" form="create-announcement-form" id="body" required className="w-full rounded border px-3 py-2"></textarea>
               </div>
 
               {/* {err && <p className="text-sm text-red-600">{err}</p>} */}

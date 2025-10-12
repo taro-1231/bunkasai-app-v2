@@ -25,7 +25,7 @@ export default function CreateBoothModal({ tenant }: { tenant: string }) {
         onClick={() => setOpen(true)}
         className="rounded-lg border px-4 py-2 hover:bg-gray-50"
       >
-        + Create Booth
+        Create Booth
       </button>
 
       {open && (
@@ -46,7 +46,7 @@ export default function CreateBoothModal({ tenant }: { tenant: string }) {
               </button>
             </div>
 
-            <form action={onSubmit} className="space-y-4">
+            <form action={onSubmit} id="create-booth-form" className="space-y-4">
               <div>
                 <label className="mb-1 block text-sm">Booth Name</label>
                 <input name="booth_name" required className="w-full rounded border px-3 py-2" />
@@ -79,8 +79,8 @@ export default function CreateBoothModal({ tenant }: { tenant: string }) {
               </div>
 
               <div>
-                <label className="mb-1 block text-sm">Description md</label>
-                <input type="text" name="description_md"  className="w-full rounded border px-3 py-2" />
+                <label className="mb-1 block text-sm">Description</label>
+                <textarea name="body" form="create-booth-form" id="body" required className="w-full rounded border px-3 py-2"></textarea>
               </div>
 
               {/* {err && <p className="text-sm text-red-600">{err}</p>} */}

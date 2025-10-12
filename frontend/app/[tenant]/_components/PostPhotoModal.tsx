@@ -27,7 +27,7 @@ export default function PostPhotoModal({ tenant }: { tenant: string }) {
         onClick={() => setOpen(true)}
         className="rounded-lg border px-4 py-2 hover:bg-gray-50"
       >
-        + Post Photo
+        Post Photo
       </button>
 
       {open && (
