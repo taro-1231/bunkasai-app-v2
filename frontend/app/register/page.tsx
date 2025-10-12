@@ -23,8 +23,8 @@ export default async function register() {
         // console.log('Registering with:', { school_name, school_slug, username, email });
         
         try {
-          const result = await apiregister({ school_name, school_slug, username, password, email });
-          redirect(`/${school_slug}`);
+          const result_slug = await apiregister({ school_name, school_slug, username, password, email });
+          redirect(`/${result_slug}`);
         } catch (error) {
           console.error('Registration failed:', error);
           // エラーハンドリングを追加
