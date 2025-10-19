@@ -21,13 +21,13 @@ export type RegisterModel = z.infer<typeof RegisterSchema>;
 // export type LoginResponseModel = z.infer<typeof LoginResponseSchema>;
 
 export async function apiregister(payload: RegisterModel){
-    const body = {
-        tenant: payload.school_slug,
-        tenant_slug: payload.school_slug,
-        owner: payload.username,
-        password: payload.password,
-        email: payload.email
-    }
+  const body = {
+      tenant: payload.school_slug,
+      tenant_slug: payload.school_slug,
+      owner: payload.username,
+      password: payload.password,
+      email: payload.email
+  }
     // console.log('payloadpayload',payload);
   // const data = await apiFetch<unknown>(`/`, {
   const data = await apiFetch<string>(`/`, {
@@ -42,6 +42,7 @@ export async function apiregister(payload: RegisterModel){
 //   //   throw new Error("Cross-tenant data detected");
 //   // }
 //   return token;
-return data;
+  // console.log('data', data);
+  return data;
 }
 

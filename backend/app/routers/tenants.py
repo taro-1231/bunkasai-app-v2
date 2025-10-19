@@ -34,6 +34,7 @@ def register(body: TenantOwnerCreate, db: Session = Depends(get_db)):
     db.add(owner)
     db.commit()
     db.refresh(owner)
+    # print('tenant.slug', tenant.slug);
     return tenant.slug
 
 @router.get('/{tenant_id}')
