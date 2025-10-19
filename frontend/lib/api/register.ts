@@ -29,7 +29,9 @@ export async function apiregister(payload: RegisterModel){
         email: payload.email
     }
     // console.log('payloadpayload',payload);
-  const data = await apiFetch<unknown>(`/`, {
+  // const data = await apiFetch<unknown>(`/`, {
+  const data = await apiFetch<string>(`/`, {
+
     method: "POST",
     body: JSON.stringify(body),
   });
@@ -40,5 +42,6 @@ export async function apiregister(payload: RegisterModel){
 //   //   throw new Error("Cross-tenant data detected");
 //   // }
 //   return token;
+return data;
 }
 

@@ -21,15 +21,19 @@ export default async function register() {
         const email = formData.get('email') as string;
 
         // console.log('Registering with:', { school_name, school_slug, username, email });
-        
+        let result_slug: string = '';
+
         try {
-          const result_slug = await apiregister({ school_name, school_slug, username, password, email });
-          redirect(`/${result_slug}`);
+          result_slug = await apiregister({ school_name, school_slug, username, password, email });
+        
         } catch (error) {
           console.error('Registration failed:', error);
           // エラーハンドリングを追加
           throw error;
         }
+
+        redirect(`/${result_slug}`);
+
       }
 
       return (
@@ -58,7 +62,7 @@ export default async function register() {
                   <input className="mt-1 w-full h-10 rounded-md border px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" required type="email" name="email" placeholder="Email" />
                 </div>
                 <div>
-                  <button type="submit" className="w-full mt-4 h-10 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60">Login</button>
+                  <button type="submit" className="w-full mt-4 h-10 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60">登録</button>
                 </div>
               </form>
             </div>
