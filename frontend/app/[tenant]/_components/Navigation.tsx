@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { apime } from '@/lib/api/auth';
+import { cookies } from 'next/headers';
 
 interface NavigationProps {
     tenant: string;
@@ -7,6 +8,10 @@ interface NavigationProps {
 
 export default async function Navigation({ tenant }: NavigationProps) {
     const user = await apime(tenant);
+    // const cookieStore = await cookies();
+    // cookieStore.delete('access_token');
+
+
 
     return (
         <nav className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b">

@@ -35,8 +35,7 @@ def create_event(body: EventCreate, tenant: Tenant = Depends(resolve_tenant), us
     db.commit()
     db.refresh(event)
     return event
-<script>
-alert('hoge')</script>
+    
 @router.delete('/{event_id}')
 def delete_event(event_id: str, tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     if user.role == 'staff' or user.role == 'owner':
