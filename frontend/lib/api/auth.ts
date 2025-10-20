@@ -63,11 +63,10 @@ export async function apime(tenant: string): Promise<SessionUserModel | null> {
   let res : SessionUserModel | null;
   try{
     const token = (await cookies()).get("access_token")?.value;
-    // console.log('token',token);
-    if(!token) {
-      // console.log('tokenがない');
-        return null;
-    }
+
+    // if(!token) {
+    //     return null;
+    // }
     
     res = await apiFetch<SessionUserModel>(`/${tenant}/auth/me`, {
         method: "GET",
@@ -82,12 +81,6 @@ export async function apime(tenant: string): Promise<SessionUserModel | null> {
     return null;
   }
   
-    // console.log('エラー出ない');
-    // user = SessionUserModelResponse.parse(await res.json());
-  
-  // if(!res){
-  //     return null;
-  // }
   return res;
 }
 

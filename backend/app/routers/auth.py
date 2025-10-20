@@ -87,4 +87,6 @@ def logout(response: Response):
 def me(tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user)):
     if user is None:
         return None
+    if user.tenant_id != tenant.id:
+        return None
     return user

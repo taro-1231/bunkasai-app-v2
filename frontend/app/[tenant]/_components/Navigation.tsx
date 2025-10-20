@@ -7,7 +7,10 @@ interface NavigationProps {
 
 export default async function Navigation({ tenant }: NavigationProps) {
     const user = await apime(tenant);
-    // let user = null;
+
+    if (!user) {
+        return null;
+    }
     return (
         <nav className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b">
             <div className="container mx-auto px-4 py-2 flex justify-between items-center">
