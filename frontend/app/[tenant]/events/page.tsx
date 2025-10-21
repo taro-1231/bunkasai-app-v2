@@ -21,10 +21,10 @@ export default async function events(
     // ];
     const events = await listEvents(tenant);
     return (
-      <div>
-        <div className="text-4xl font-bold">
-          <h1>events </h1>
-        </div>
+      <div className="text-center mb-10">
+        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
+          イベント一覧
+        </h1>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {events.map(e => 
           <EventCard 

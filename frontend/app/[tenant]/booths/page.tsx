@@ -30,10 +30,10 @@ export default async function booths(
     const booths = await listBooths(tenant);
   
     return (
-      <div>
-        <div className="text-4xl font-bold">
-          <h1>booths </h1>
-        </div>
+      <div className="text-center mb-10">
+        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
+          出店一覧
+        </h1>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {booths.map(b => <BoothCard key={b.id} name={b.booth_name} location={b.location} belong={b.belong} summary={b.summary} open_from={b.open_from?.toISOString() ?? ""} open_to={b.open_to?.toISOString() ?? ""} desc={b.description_md ?? ""} />)}
         </div>

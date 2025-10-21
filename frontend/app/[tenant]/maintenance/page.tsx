@@ -24,16 +24,12 @@ export default async function logout(
 
         const cookieStore = await cookies();
         cookieStore.delete('access_token');
-        // await apilogout(tenant);
           redirect(`/${tenant}`);
-        
-
-        // console.log('login_token',login_token);
-        // return login_token;
+      
       }
 
       const users = await listUsers(tenant) as UserModel[];
-      // console.log('users',users);
+
       return (
         <main className="min-h-[calc(100svh-4rem)] bg-gray-50 px-4 py-8">
           <div className="max-w-4xl mx-auto space-y-8">
@@ -54,8 +50,12 @@ export default async function logout(
                           key={u.id}
                           className="rounded-md border px-3 py-2 text-sm text-gray-700 bg-gray-50"
                         >
-                          {u.username}
+                          <span className="text-gray-800">{u.username}</span>
+                          <span className='ml-2 inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700'>
+                            {u.role}
+                          </span>
                         </div>
+
                       ))}
                     </div>
                   </div>

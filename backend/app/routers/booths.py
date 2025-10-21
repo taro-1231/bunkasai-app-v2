@@ -34,7 +34,7 @@ def create_booth(body: BoothCreate, tenant: Tenant = Depends(resolve_tenant), us
         open_to=body.open_to,
         tenant_id=tenant.id
     )
-    print(booth)
+    # print(booth)
     db.add(booth)
     db.commit()
     db.refresh(booth)

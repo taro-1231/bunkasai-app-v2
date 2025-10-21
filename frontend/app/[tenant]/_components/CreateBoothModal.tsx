@@ -80,7 +80,7 @@ export default function CreateBoothModal({ tenant }: { tenant: string }) {
 
               <div>
                 <label className="mb-1 block text-sm">Description</label>
-                <textarea name="body" form="create-booth-form" id="body" required className="w-full rounded border px-3 py-2"></textarea>
+                <textarea name="description_md" form="create-booth-form" id="description_md" required className="w-full rounded border px-3 py-2"></textarea>
               </div>
 
               {/* {err && <p className="text-sm text-red-600">{err}</p>} */}

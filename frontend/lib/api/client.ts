@@ -62,19 +62,13 @@ export async function apiFetch<T = unknown>(path: string, opts: Options = {}) {
     }
   }
 
-  // 認証トークンの付与（例：localStorage や Cookie から取り出す仕様に合わせて実装）
-  // if (opts.auth && !headers.has("Authorization")) {
-  //   const token = getTokenSomehow();
-  //   if (token) headers.set("Authorization", `Bearer ${token}`);
-  // }
-
   // 指定したオプションでAPIを呼び出す
   const res = await fetch(`${API_BASE}${path}`, {
     method: opts.method ?? (opts.body ? "POST" : "GET"),
     headers,
     body: opts.body,
     cache: opts.cache ?? "no-store",
-    credentials: "same-origin", // 同一オリジン（rewrite経由）ならCookie送受信OK
+    credentials: "same-origin", 
   });
   //apiの戻り値であるレスポンスオブジェクトをでcontent-typeがJSONならjson()でパースし、それ以外はtext()でテキストにする
   const contentType = res.headers.get("content-type") || "";
