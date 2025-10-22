@@ -66,3 +66,28 @@ export async function createAnnouncement(
     return null;
   }
 }
+
+
+export async function deleteAnnouncement(
+  tenant: string,
+  announcement_id : string,
+  // payload: createBoothModel
+): Promise<void> {
+  try{
+    const token = (await cookies()).get("access_token")?.value;
+    if (!token) {
+      throw new Error("認証トークンが見つかりません。ログインしてください。");
+    }
+    const data = await apiFetch<unknown>(`/${tenant}/announcements/${announcement_id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    // const booth = createBoothSchema.parse(data);
+    
+  }catch(error){
+    console.error('createAnnouncement error:', error);
+    throw error;
+  }
+}

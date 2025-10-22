@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -7,19 +7,40 @@ import { postPhotoAction } from "@/lib/modalAction/action";
 export default function PostPhotoModal({ tenant }: { tenant: string }) {
   const [open, setOpen] = useState(false);
   type Role = "owner" | "vender" | "staff";
-//   const [file, setFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+
+
   const router = useRouter();
 
-  async function onSubmit(formData: FormData) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();                    // ← 重要
+    setLoading(true);
+    try {
+      const fd = new FormData(e.currentTarget);
+      const file = fd.get('file') as File | null;
+      if (!file) throw new Error('ファイルを選択してください。');
 
-    // if (!formData.get('file')) {
-    //   return;
-    // }
-    const res = await postPhotoAction(tenant, formData.get('file') as File);
-
-    setOpen(false);
-    router.refresh();
+      await postPhotoAction(tenant, file); // ← これは通常のAPI/Server関数呼び出し
+      setOpen(false);
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message ?? '投稿に失敗しました');
+    } finally {
+      setLoading(false);
+    }
   }
+
+  // async function onSubmit(formData: FormData) {
+  //   setLoading(true);
+
+  //   const res = await postPhotoAction(tenant, formData.get('file') as File);
+
+  //   setOpen(false);
+
+  //   router.refresh();
+  //   setLoading(false)
+  // }
+
 
   return (
     <>
@@ -35,7 +56,7 @@ export default function PostPhotoModal({ tenant }: { tenant: string }) {
           aria-modal
           role="dialog"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-          onClick={() => setOpen(false)}
+          onClick={() => !loading && setOpen(false)}
         >
           <div
             className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
@@ -48,7 +69,9 @@ export default function PostPhotoModal({ tenant }: { tenant: string }) {
               </button>
             </div>
 
-            <form action={onSubmit} className="space-y-4">
+            {/* <form action={onSubmit} className="space-y-4"> */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+
                 <div>
                     {/* className="rounded-lg border px-4 py-2 hover:bg-gray-50" */}
                   <label className="block text-sm font-medium text-gray-700 mb-2">画像ファイル</label>
@@ -68,8 +91,8 @@ export default function PostPhotoModal({ tenant }: { tenant: string }) {
                 </button>
                 <button
                   type="submit"
-                //   type="button"
-                //   onClick={() => console.log('submit button clicked')}
+                  disabled  = {loading}
+
                   className="rounded bg-black px-4 py-2 text-white disabled:opacity-60"
                 >
                   Post

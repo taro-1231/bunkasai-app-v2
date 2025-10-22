@@ -34,6 +34,7 @@ export default async function events(
           end_at={e.end_at ? new Date(e.end_at).toISOString() : ""} 
           description={e.description ?? ""} 
           user_role= {user ? user.role : ''}
+          tenant = {tenant}
           />)}
           
         </div>

@@ -12,7 +12,7 @@ export default function CreateEventModal({ tenant }: { tenant: string }) {
 
   async function onSubmit(formData: FormData) {
     setLoading(true);
-    setError(null);
+    // setError(null);
     
     try {
       const res = await createEventAction(tenant, formData);
@@ -59,6 +59,8 @@ export default function CreateEventModal({ tenant }: { tenant: string }) {
             </div>
 
             <form action={onSubmit} id="create-event-form" className="space-y-4">
+            {/* <form onSubmit={handleSubmit} id="create-event-form" className="space-y-4"> */}
+
               <div>
                 <label className="mb-1 block text-sm">Event Name</label>
                 <input name="event_name" required className="w-full rounded border px-3 py-2" />

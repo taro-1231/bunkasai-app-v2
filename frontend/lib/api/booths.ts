@@ -18,6 +18,8 @@ const BoothSchema = z.object({
 });
 export type BoothModel = z.infer<typeof BoothSchema>;
 
+
+
 export async function listBooths(tenant: string | null) {
   if (!tenant) 
     tenant = getTenantFromBrowser();
@@ -32,12 +34,12 @@ export async function listBooths(tenant: string | null) {
   return arr;
 }
 
-export async function getBooth(tenant: string, id: string | number) {
-  const data = await apiFetch<unknown>(`/${tenant}/booths/${id}`);
-  const bo = BoothSchema.parse(data);
+// export async function getBooth(tenant: string, id: string | number) {
+//   const data = await apiFetch<unknown>(`/${tenant}/booths/${id}`);
+//   const bo = BoothSchema.parse(data);
   // if (bo.tenant !== tenant) throw new Error("Cross-tenant data detected");
   // return bo;
-}
+// }
 
 const createBoothSchema = z.object({
   // id: z.string(),
@@ -75,3 +77,28 @@ export async function createBooth(
     throw error;
   }
 }
+
+export async function deleteBooth(
+  tenant: string,
+  booth_id : string,
+  // payload: createBoothModel
+): Promise<void> {
+  try{
+    const token = (await cookies()).get("access_token")?.value;
+    if (!token) {
+      throw new Error("認証トークンが見つかりません。ログインしてください。");
+    }
+    const data = await apiFetch<unknown>(`/${tenant}/booths/${booth_id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    // const booth = createBoothSchema.parse(data);
+    
+  }catch(error){
+    console.error('createBooth error:', error);
+    throw error;
+  }
+}
+

@@ -1,8 +1,36 @@
-export default function BoothCard({booth_id, name, location, belong, summary, open_from, open_to, desc ,user_role}: {booth_id:string, name: string; location: string; belong: string; summary: string; open_from: string; open_to: string; desc: string ,user_role:string}) {
+'use client';
+
+import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { deleteBooth } from "@/lib/api/booths";
+
+export default function BoothCard({booth_id, name, location, belong, summary, open_from, open_to, desc ,user_role,tenant}: 
+  {booth_id:string, name: string; location: string; belong: string; summary: string; open_from: string; open_to: string; desc: string; user_role:string; tenant: string}) {
+  
   const open_from_date = new Date(open_from)
   open_from = open_from_date.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })
   const open_to_date = new Date(open_to)
   open_to = open_to_date.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })
+
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
+
+  async function handleDelete(){
+    try {
+      setLoading(true);
+      await deleteBooth(tenant, booth_id)
+      startTransition(() => {
+        router.refresh();
+      });
+
+      }catch (e:any) {
+        alert(e.message ?? '削除に失敗しました');
+      } finally {
+        setLoading(false);
+      }
+    }
+  
 
     
     return (
@@ -15,14 +43,18 @@ export default function BoothCard({booth_id, name, location, belong, summary, op
         <p className="text-sm text-gray-600 mt-1">{open_to}</p>
         <p className="text-sm text-gray-600 mt-1">{desc}</p>
         
-        {user_role === "owner" ? (
-          <button className="mt-3 px-3 py-1.5 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700">
+        {user_role === "owner" && (
+          <button className="mt-3 px-3 py-1.5 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700"
+            onClick={handleDelete}
+            disabled  = {loading || pending}
+            aria-disabled={loading || pending}>
             削除
           </button>
-        ):(
-          <> </>
         )}
       </div>
     );
   }
 
+  async function safeText(res: Response) {
+    try { return await res.text(); } catch { return ''; }
+  }

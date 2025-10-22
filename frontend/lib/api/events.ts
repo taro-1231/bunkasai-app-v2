@@ -72,3 +72,28 @@ export async function createEvent(
     throw error;
   }
 }
+
+export async function deleteEvent(
+  tenant: string,
+  event_id : string,
+  // payload: createBoothModel
+): Promise<void> {
+  try{
+    const token = (await cookies()).get("access_token")?.value;
+    if (!token) {
+      throw new Error("認証トークンが見つかりません。ログインしてください。");
+    }
+    const data = await apiFetch<unknown>(`/${tenant}/events/${event_id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    // const booth = createBoothSchema.parse(data);
+    
+  }catch(error){
+    console.error('createEvent error:', error);
+    throw error;
+  }
+}
+

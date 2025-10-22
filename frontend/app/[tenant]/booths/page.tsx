@@ -44,6 +44,7 @@ export default async function booths(
           open_to={b.open_to?.toISOString() ?? ""} 
           desc={b.description_md ?? ""}
           user_role= {user ? user.role : ''}
+          tenant = {tenant}
            />)}
         </div>
       </div>
