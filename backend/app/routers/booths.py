@@ -51,7 +51,7 @@ def delete_booth(booth_id: str, tenant: Tenant = Depends(resolve_tenant), user: 
         raise HTTPException(status_code=404, detail="Booth not found")
     db.delete(booth)
     db.commit()
-    return {"message": "Booth deleted successfully"}
+    return 
 
 @router.get('/{booth_id}')
 def get_booth(booth_id: str, tenant: Tenant = Depends(resolve_tenant), db: Session = Depends(get_db)):

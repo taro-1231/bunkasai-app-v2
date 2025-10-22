@@ -44,7 +44,7 @@ def delete_announcement(announcement_id: str, tenant: Tenant = Depends(resolve_t
         raise HTTPException(status_code=404, detail="Announcement not found")
     db.delete(announcement)
     db.commit()
-    return {"message": "Announcement deleted successfully"}
+    return
 
 @router.get('/{announcement_id}')
 def get_announcement(announcement_id: str, tenant: Tenant = Depends(resolve_tenant), db: Session = Depends(get_db)):

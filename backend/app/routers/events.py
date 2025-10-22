@@ -35,7 +35,7 @@ def create_event(body: EventCreate, tenant: Tenant = Depends(resolve_tenant), us
     db.commit()
     db.refresh(event)
     return event
-    
+
 @router.delete('/{event_id}')
 def delete_event(event_id: str, tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     if user.role == 'staff' or user.role == 'owner':
@@ -47,7 +47,7 @@ def delete_event(event_id: str, tenant: Tenant = Depends(resolve_tenant), user: 
         raise HTTPException(status_code=404, detail="Event not found")
     db.delete(event)
     db.commit()
-    return {"message": "Event deleted successfully"}
+    return 
 
 @router.get('/{event_id}')
 def get_event(event_id: str, tenant: Tenant = Depends(resolve_tenant), db: Session = Depends(get_db)):
