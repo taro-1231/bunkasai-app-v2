@@ -10,8 +10,8 @@ const EventSchema = z.object({
   // tenant: z.string(),
   event_name: z.string(),
   location: z.string(),
-  start_at: z.coerce.date().optional(),
-  end_at: z.coerce.date().optional(),
+  start_at: z.coerce.date(),
+  end_at: z.coerce.date(),
   description: z.string().optional(),
 });
 export type EventModel = z.infer<typeof EventSchema>;
@@ -56,18 +56,19 @@ export async function createEvent(
   try{
     const token = (await cookies()).get("access_token")?.value;
     if (!token) {
-      return null;
+      throw new Error("認証トークンが見つかりません。ログインしてください。");
     }
-    const data = await apiFetch(`/${tenant}/events`, {
+    const data = await apiFetch<unknown>(`/${tenant}/events`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
-    return data;
+    const event = createEventSchema.parse(data);
+    return event;
   }catch(error){
-    console.error('error',error);
-    return null;
+    console.error('createEvent error:', error);
+    throw error;
   }
 }

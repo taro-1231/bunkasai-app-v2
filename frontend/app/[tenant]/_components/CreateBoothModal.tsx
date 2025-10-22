@@ -6,17 +6,29 @@ import { createBoothAction } from "@/lib/modalAction/action";
 
 export default function CreateBoothModal({ tenant }: { tenant: string }) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   type Role = "owner" | "vender" | "staff";
-//   const [loading, setLoading] = useState(false);
-//   const [err, setErr] = useState<string | null>(null);
-//   const router = useRouter();
 
   async function onSubmit(formData: FormData) {
-    const res = await createBoothAction(tenant, formData);
-    // console.log('res',res);
-    setOpen(false);
-    //     const res = await createUserAction();
-//     console.log('res',res);
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const res = await createBoothAction(tenant, formData);
+      if (res && 'error' in res) {
+        setError(res.error);
+        return;
+      }
+      setOpen(false);
+      // ページをリロードしてブース一覧を更新
+      window.location.reload();
+    } catch (err) {
+      setError('ブースの作成に失敗しました。');
+      console.error('Create booth error:', err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -83,23 +95,23 @@ export default function CreateBoothModal({ tenant }: { tenant: string }) {
                 <textarea name="description_md" form="create-booth-form" id="description_md" required className="w-full rounded border px-3 py-2"></textarea>
               </div>
 
-              {/* {err && <p className="text-sm text-red-600">{err}</p>} */}
+              {error && <p className="text-sm text-red-600">{error}</p>}
 
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="rounded border px-4 py-2"
+                  disabled={loading}
+                  className="rounded border px-4 py-2 disabled:opacity-60"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                //   type="button"
-                //   onClick={() => console.log('submit button clicked')}
+                  disabled={loading}
                   className="rounded bg-black px-4 py-2 text-white disabled:opacity-60"
                 >
-                  Create
+                  {loading ? 'Creating...' : 'Create'}
                 </button>
               </div>
             </form>

@@ -6,17 +6,29 @@ import { createEventAction } from "@/lib/modalAction/action";
 
 export default function CreateEventModal({ tenant }: { tenant: string }) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   type Role = "owner" | "vender" | "staff";
-//   const [loading, setLoading] = useState(false);
-//   const [err, setErr] = useState<string | null>(null);
-//   const router = useRouter();
 
   async function onSubmit(formData: FormData) {
-    const res = await createEventAction(tenant, formData);
-    // console.log('res',res);
-    setOpen(false);
-    //     const res = await createUserAction();
-//     console.log('res',res);
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const res = await createEventAction(tenant, formData);
+      if (res && 'error' in res) {
+        setError(res.error);
+        return;
+      }
+      setOpen(false);
+      // ページをリロードしてイベント一覧を更新
+      window.location.reload();
+    } catch (err) {
+      setError('イベントの作成に失敗しました。');
+      console.error('Create event error:', err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -59,36 +71,36 @@ export default function CreateEventModal({ tenant }: { tenant: string }) {
 
               <div>
                 <label className="mb-1 block text-sm">Start at</label>
-                <input type="datetime-local" name="open_to"  className="w-full rounded border px-3 py-2" />
+                <input type="datetime-local" name="start_at" className="w-full rounded border px-3 py-2" />
               </div>
 
               <div>
                 <label className="mb-1 block text-sm">End at</label>
-                <input type="datetime-local" name="open_to"  className="w-full rounded border px-3 py-2" />
+                <input type="datetime-local" name="end_at" className="w-full rounded border px-3 py-2" />
               </div>
 
               <div>
                 <label className="mb-1 block text-sm">Description</label>
-                <textarea name="body" form="create-event-form" id="body" required className="w-full rounded border px-3 py-2"></textarea>
+                <textarea name="description" form="create-event-form" id="description" required className="w-full rounded border px-3 py-2"></textarea>
               </div>
 
-              {/* {err && <p className="text-sm text-red-600">{err}</p>} */}
+              {error && <p className="text-sm text-red-600">{error}</p>}
 
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="rounded border px-4 py-2"
+                  disabled={loading}
+                  className="rounded border px-4 py-2 disabled:opacity-60"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                //   type="button"
-                //   onClick={() => console.log('submit button clicked')}
+                  disabled={loading}
                   className="rounded bg-black px-4 py-2 text-white disabled:opacity-60"
                 >
-                  Create
+                  {loading ? 'Creating...' : 'Create'}
                 </button>
               </div>
             </form>

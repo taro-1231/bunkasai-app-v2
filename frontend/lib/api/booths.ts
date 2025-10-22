@@ -13,8 +13,8 @@ const BoothSchema = z.object({
   belong: z.string(),
   summary: z.string(),
   description_md: z.string().optional(),
-  open_from: z.coerce.date().optional(),
-  open_to: z.coerce.date().optional(),
+  open_from: z.coerce.date(),
+  open_to: z.coerce.date(),
 });
 export type BoothModel = z.infer<typeof BoothSchema>;
 
@@ -59,7 +59,7 @@ export async function createBooth(
   try{
     const token = (await cookies()).get("access_token")?.value;
     if (!token) {
-      return null;
+      throw new Error("認証トークンが見つかりません。ログインしてください。");
     }
     const data = await apiFetch<unknown>(`/${tenant}/booths`, {
       method: "POST",
@@ -68,18 +68,10 @@ export async function createBooth(
       },
       body: JSON.stringify(payload),
     });
-    // if (!data.ok) {
-    //   const text = await data.text();
-    //   console.error("[booths upstream]", data.status, text); // ← ここに detail が出る
-    //   throw new Error(text);
-    // }
-    // console.log('data',data);
-    // return data;
     const booth = createBoothSchema.parse(data);
     return booth;
   }catch(error){
-    console.error('error',error);
-    return null;
-
+    console.error('createBooth error:', error);
+    throw error;
   }
 }

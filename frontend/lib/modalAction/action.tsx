@@ -7,7 +7,16 @@ import { postPhoto } from "../api/photos";
 
 function toDateOrUndef(v: FormDataEntryValue | null): Date | undefined {
     if (typeof v !== "string" || v.trim() === "") return undefined; // null/空文字は undefined に
-    const date = new Date(v); // type="date" or "datetime-local" の文字列を Date に
+    
+    // datetime-local の値は "YYYY-MM-DDTHH:mm" 形式
+    // これを ISO 8601 形式に変換してから Date オブジェクトを作成
+    let dateString = v.trim();
+    if (dateString && !dateString.includes('T')) {
+      // date フィールドの場合は時刻を追加
+      dateString += 'T00:00';
+    }
+    
+    const date = new Date(dateString);
     return isNaN(date.getTime()) ? undefined : date; // 無効な日付の場合は undefined を返す
   }
 
@@ -33,7 +42,7 @@ export async function createEventAction(tenant: string, formData: FormData) {
     const location = formData.get('location') as string;
     const start_at = toDateOrUndef(formData.get('start_at'));
     const end_at = toDateOrUndef(formData.get('end_at'));
-    const description = formData.get('description') as string;
+    const description = formData.get('description') as string | undefined;
     const payload = {event_name, location, start_at, end_at, description};
     // console.log('payload',payload);
     try {

@@ -1,5 +1,9 @@
-export default function BoothCard({ name, location, belong, summary, open_from, open_to, desc }: { name: string; location: string; belong: string; summary: string; open_from: string; open_to: string; desc: string }) {
-    
+export default function BoothCard({booth_id, name, location, belong, summary, open_from, open_to, desc ,user_role}: {booth_id:string, name: string; location: string; belong: string; summary: string; open_from: string; open_to: string; desc: string ,user_role:string}) {
+  const open_from_date = new Date(open_from)
+  open_from = open_from_date.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })
+  const open_to_date = new Date(open_to)
+  open_to = open_to_date.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })
+
     
     return (
       <div className="rounded-2xl border bg-white shadow-sm p-4 hover:shadow-md transition">
@@ -10,9 +14,14 @@ export default function BoothCard({ name, location, belong, summary, open_from, 
         <p className="text-sm text-gray-600 mt-1">{open_from}</p>
         <p className="text-sm text-gray-600 mt-1">{open_to}</p>
         <p className="text-sm text-gray-600 mt-1">{desc}</p>
-        <button className="mt-3 px-3 py-1.5 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700">
-          詳細を見る
-        </button>
+        
+        {user_role === "owner" ? (
+          <button className="mt-3 px-3 py-1.5 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700">
+            削除
+          </button>
+        ):(
+          <> </>
+        )}
       </div>
     );
   }
