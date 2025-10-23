@@ -39,18 +39,6 @@ type Options = {
 export async function apiFetch<T = unknown>(path: string, opts: Options = {}) {
   const headers = new Headers(opts.headers);
 
-  // try{
-  //   const token = (await cookies()).get("access_token")?.value;
-  //   if (!token) {
-  //       return null;
-  //   }
-  //   headers.set("Authorization", `Bearer ${token}`);
-  // }catch(error){
-  //   console.error('error',error);
-  //   return null;
-  // }
-
-
       // JSONをデフォルトに（FormDataのときは自動で外す）
       // JSONのときはレスポンス(Accept)をJSONにして、
       //GETのときはbodyないのでContent-Typeはいらない、POSTのときはContent-TypeをJSONにする
@@ -81,6 +69,10 @@ export async function apiFetch<T = unknown>(path: string, opts: Options = {}) {
   if (res.status === 404){
     redirect('/register');
   }
+  if (res.status === 409){
+    throw new ApiError(res.status, body);
+  }
+
   if (!res.ok) throw new ApiError(res.status, body);
 
   // 呼び出し元の<T>の型で返す

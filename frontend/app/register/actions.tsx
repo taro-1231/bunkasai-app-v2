@@ -18,7 +18,6 @@ export async function registerAction(
   const password    = formData.get('password') as string | null;
   const email       = formData.get('email') as string | null;
 
-  // ざっくり入力チェック（足りなければ 400 相当のエラー返し）
   if (!school_name || !school_slug || !username || !password || !email) {
     return { ok: false, error: 'Missing required fields' };
   }
@@ -36,8 +35,10 @@ export async function registerAction(
     return { ok: true, slug: result_slug };
   } catch (err: any) {
     // 409/422 などのAPIエラーを文字列化
-    const msg =
-      typeof err?.message === 'string' ? err.message : 'Registration failed';
+    const msg = err.body?.detail ?? `API error ${err.status}`;
+    
+    // return { ok: false, error: err.detail };
     return { ok: false, error: msg };
+
   }
 }

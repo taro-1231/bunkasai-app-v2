@@ -1,3 +1,4 @@
+from sqlite3 import IntegrityError
 from fastapi import APIRouter, HTTPException, Request
 from app.schemas import TenantCreate, TenantRead, TenantOwnerCreate
 from app.db import get_db
@@ -18,23 +19,31 @@ def resolve_tenant(slug: str, db: Session = Depends(get_db)):
 
 @router.post('/')#, response_model=TenantRead)
 def register(body: TenantOwnerCreate, db: Session = Depends(get_db)):
+
+    existing = db.query(Tenant).filter(Tenant.slug == body.tenant_slug).first()
+    if existing:
+        raise HTTPException(
+            status_code=409,
+            detail="このURLは既に使われています。"
+        )
+
     tenant = Tenant(slug=body.tenant_slug, school_name=body.tenant)
     db.add(tenant)
     db.commit()
     db.refresh(tenant)
 
     owner = User(
-    username=body.owner,
-    password_hash=body.password, #ハッシュ化はあとで
-    email=body.email,
-    role='owner',
-    belong='owner',
-    tenant_id=tenant.id
+        username=body.owner,
+        password_hash=body.password, #ハッシュ化はあとで
+        email=body.email,
+        role='owner',
+        belong='owner',
+        tenant_id=tenant.id
     )
+
     db.add(owner)
     db.commit()
     db.refresh(owner)
-    # print('tenant.slug', tenant.slug);
     return tenant.slug
 
 @router.get('/{tenant_id}')
