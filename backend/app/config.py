@@ -8,3 +8,4 @@ MEDIA_ROOT = os.getenv("MEDIA_ROOT", "./media")
 ALLOWED_ORIGINS = [s for s in os.getenv("ALLOWED_ORIGINS", "").split(",") if s]
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")  # 本番は環境変数で上書き
+
