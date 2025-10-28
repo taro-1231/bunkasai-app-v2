@@ -7,6 +7,7 @@ from .config import DB_PATH, SQLALCHEMY_DATABASE_URL
 # SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 # postgres用
+print('')
 SQLALCHEMY_DATABASE_URL = DB_PATH
 SQLALCHEMY_ENGINE_OPTIONS = {
     "pool_pre_ping": True,
@@ -16,7 +17,7 @@ SQLALCHEMY_ENGINE_OPTIONS = {
 #SessionLocalはDBへの接続を実際に管理する
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
+    # connect_args={"check_same_thread": False},
     **SQLALCHEMY_ENGINE_OPTIONS
 )
 
