@@ -49,12 +49,15 @@ export default async function login(
                 </div>
               </form>
             </div>
-            <div className="px-2 w-full max-w-md rounded-2xl border bg-white shadow-sm p-6">
+            {tenant === "kana-u" ? (
+              <div className="px-2 w-full max-w-md rounded-2xl border bg-white shadow-sm p-6">
               <h1 className="text-xl font-semibold mb-6">テストユーザー</h1>
               <p className="text-xl font-semibold mb-6">username = 'ryota'</p>
               <p className="text-xl font-semibold mb-6">password = '1231'</p>
 
             </div>
+            ) : null}
+            
 
           </main>
           {/* <main className="min-h-[calc(100svh-4rem)] grid place-items-center px-4">
