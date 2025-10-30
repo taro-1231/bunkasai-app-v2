@@ -5,6 +5,7 @@ from app.db import get_db
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from app.models import Tenant, User
+from .security import hash_password
 
 router = APIRouter(prefix='/api/v2/tenants')
 
@@ -34,7 +35,7 @@ def register(body: TenantOwnerCreate, db: Session = Depends(get_db)):
 
     owner = User(
         username=body.owner,
-        password_hash=body.password, #ハッシュ化はあとで
+        password_hash= hash_password(body.password), 
         email=body.email,
         role='owner',
         belong='owner',

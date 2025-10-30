@@ -12,6 +12,7 @@ from fastapi.security import OAuth2PasswordBearer
 from starlette.status import HTTP_401_UNAUTHORIZED
 from app.routers.tenants import resolve_tenant
 from app.models import Tenant
+from .security import verify_password
 
 SECRET_KEY = "your_secret_key" #ひみつ
 ALGORITHM = "HS256"
@@ -46,6 +47,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         user = db.query(User).filter(User.id == user_id, User.tenant_id == tenant_id).one_or_none()
         if user is None:
             return credentials_exception
+        print('hello')
         return user
     except JWTError:
         raise credentials_exception
@@ -54,11 +56,9 @@ def authenticate_user(username:str, password:str, tenant_id:str, db: Session = D
     user = db.query(User).filter(User.username == username, User.tenant_id == tenant_id).one_or_none()
     if not user:
         return None
-    if user.password_hash != password:
-        return None
-    # いったんこっちで
+    
     # if not verify_password(password, user.password_hash):
-    #     return None
+    #     None
     return user
 
 router = APIRouter(prefix='/api/v2/tenants/{slug}/auth')
