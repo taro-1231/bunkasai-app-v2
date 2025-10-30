@@ -33,11 +33,11 @@ export default function RegisterPage() {
   }, [state, router]);
 
   return (
+    <>
     <main className="min-h-[calc(100svh-4rem)] grid place-items-center px-4">
       <div className="w-full max-w-md rounded-2xl border bg-white shadow-sm p-6">
         <h1 className="text-xl font-semibold mb-6">学校登録</h1>
 
-        {/* APIは Server Action に委譲 */}
         <form action={formAction} className="space-y-4">
           <div>
             <label className="block text-sm text-gray-700">学校名</label>
@@ -99,6 +99,14 @@ export default function RegisterPage() {
         </form>
       </div>
     </main>
+    <main className="min-h-[calc(100svh-4rem)] grid place-items-center px-4">
+      <div className="w-full max-w-md rounded-2xl border bg-white shadow-sm p-6">
+        <h1 className="text-xl font-semibold mb-6">登録済URL</h1>
+        <p className="text-xl font-semibold mb-6">https://bunkasai-app-v2.vercel.app/kana-u</p>
+      </div>
+    </main>
+
+    </>
   );
 }
 
