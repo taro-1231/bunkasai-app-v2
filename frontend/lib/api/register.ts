@@ -22,7 +22,7 @@ export type RegisterModel = z.infer<typeof RegisterSchema>;
 
 export async function apiregister(payload: RegisterModel){
   const body = {
-      tenant: payload.school_slug,
+      tenant: payload.school_name,
       tenant_slug: payload.school_slug,
       owner: payload.username,
       password: payload.password,

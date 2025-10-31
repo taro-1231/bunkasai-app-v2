@@ -27,7 +27,8 @@ def register(body: TenantOwnerCreate, db: Session = Depends(get_db)):
             status_code=409,
             detail="このURLは既に使われています。"
         )
-
+    print('tenant_name')
+    print(body.tenant)
     tenant = Tenant(slug=body.tenant_slug, school_name=body.tenant)
     db.add(tenant)
     db.commit()
@@ -47,17 +48,21 @@ def register(body: TenantOwnerCreate, db: Session = Depends(get_db)):
     db.refresh(owner)
     return tenant.slug
 
-@router.get('/{tenant_id}')
-def get_tenant(tenant_id: str):
-    return {"tenant_id": tenant_id }
+@router.get('/{tenant_slug}')
+def get_tenant(tenant_slug: str,db: Session = Depends(get_db)):
+    tenant = db.query(Tenant).filter(Tenant.slug == tenant_slug).first()
+    # tenant.name
+    print(tenant.school_name)
+    print('aa')
+    return tenant.school_name
 
 @router.get('/')
 def get_all_tenants(db: Session = Depends(get_db)):
     tenants = db.query(Tenant).all()
     return tenants
 
-@router.delete('/{tenant_id}')
-def delete_tenant(tenant_id: str, db: Session = Depends(get_db)):
-    db.query(Tenant).filter(Tenant.id == tenant_id).delete()
+@router.delete('/{tenant_slug}')
+def delete_tenant(tenant_slug: str, db: Session = Depends(get_db)):
+    db.query(Tenant).filter(Tenant.slug == tenant_slug).delete()
     db.commit()
-    return {"message": "Tenant deleted successfully"}
+    return 

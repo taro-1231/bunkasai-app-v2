@@ -21,7 +21,6 @@ export async function registerAction(
   if (!school_name || !school_slug || !username || !password || !email) {
     return { ok: false, error: 'Missing required fields' };
   }
-
   try {
     // FastAPI に登録を依頼。戻りで slug を受け取る想定
     const result_slug = await apiregister({

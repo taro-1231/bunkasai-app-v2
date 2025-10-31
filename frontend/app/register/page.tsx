@@ -1,10 +1,12 @@
 // app/(auth)/register/page.tsx
 'use client';
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
 import { registerAction, type RegisterState } from './actions';
+
+// import React from "react";
 
 const initialState: RegisterState = { ok: false };
 
@@ -23,7 +25,11 @@ function SubmitButton() {
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [state, formAction] = useFormState(registerAction, initialState);
+  // const [state, formAction] = useFormState(registerAction, initialState);
+  const [state, formAction] = React.useActionState<RegisterState, FormData>(
+    registerAction,
+    initialState
+  )
 
   // 成功したらここで遷移（redirectは使わない）
   useEffect(() => {
