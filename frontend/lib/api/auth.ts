@@ -108,8 +108,8 @@ export async function apilogout(tenant: string | null) {
 
 export async function apigetTenant(tenant_slug: string): Promise<string>{
   const res = await apiFetch<string>(`/${tenant_slug}`, {
-    // method: "GET",
-    method: 'DELETE',
+    method: "GET",
+    // method: 'DELETE',
 });
 // console.log('res')
 // console.log(res)
