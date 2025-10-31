@@ -2,6 +2,7 @@ import { z } from "zod";
 import { apiFetch } from "./client";
 import { getTenantFromBrowser } from "./client";
 import { cookies } from "next/headers";
+import { error } from "console";
 
 
 const LoginSchema = z.object({
@@ -67,7 +68,6 @@ export async function apime(tenant: string): Promise<SessionUserModel | null> {
     // if(!token) {
     //     return null;
     // }
-    
     res = await apiFetch<SessionUserModel>(`/${tenant}/auth/me`, {
         method: "GET",
         headers: {
@@ -75,13 +75,28 @@ export async function apime(tenant: string): Promise<SessionUserModel | null> {
             "Accept": "application/json"
         },  
     });
-  }catch(e){
-    console.error('error',e);
+    return res
+  }catch(err){
+    // console.log(err)
+    if (err instanceof Error) {
+      if (err.message.includes("498")) {
+        console.log("このエラー処理ができない");
+        // console.log(err)
+        throw err
+        // console.log('')
+      } else {
+        // console.log('うれしくない');
+      }
     // console.log('エラー');
+    // console.log()
     return null;
   }
+  return null;
+}
+  // console.log('AAAAAAAAAAA')
+  // console.log(res)
   
-  return res;
+  // return res;
 }
 
 export async function apilogout(tenant: string | null) {

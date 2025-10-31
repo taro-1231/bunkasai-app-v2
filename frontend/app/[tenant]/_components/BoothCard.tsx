@@ -35,15 +35,24 @@ export default function BoothCard({booth_id, name, location, belong, summary, op
     
     return (
       <div className="rounded-2xl border bg-white shadow-sm p-4 hover:shadow-md transition">
-        <h3 className="text-lg font-semibold">{name}</h3>
-        <p className="text-sm text-gray-600 mt-1">{location}</p>
-        <p className="text-sm text-gray-600 mt-1">{belong}</p>
+        <h3 className="text-lg font-semibold">店舗名： {name}</h3>
+        <p className="text-sm text-gray-600 mt-1">場所： {location}</p>
+        <p className="text-sm text-gray-600 mt-1">所属： {belong}</p>
         <p className="text-sm text-gray-600 mt-1">{summary}</p>
-        <p className="text-sm text-gray-600 mt-1">{open_from}</p>
-        <p className="text-sm text-gray-600 mt-1">{open_to}</p>
-        <p className="text-sm text-gray-600 mt-1">{desc}</p>
+        {open_from !== '1970/1/1 9:00:00' && (
+          <p className="text-sm text-gray-600 mt-1">開始時間： {open_from}</p>
+
+        )}
+        {open_to !== '1970/1/1 9:00:00' && (
+          <p className="text-sm text-gray-600 mt-1">終了時間： {open_to}</p>
+
+        )}
+        {desc !== '' && (
+          <p className="text-sm text-gray-600 mt-1">詳細： {desc}</p>
+
+        )}
         
-        {user_role === "owner" && (
+        {(user_role === "owner" || user_role === "vender") && (
           <button className="mt-3 px-3 py-1.5 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700"
             onClick={handleDelete}
             disabled  = {loading || pending}

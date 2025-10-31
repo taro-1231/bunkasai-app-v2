@@ -31,7 +31,7 @@ export default function AnnouncementCard({ title, body, announcement_id, tenant,
         <h3 className="text-lg font-semibold">{title}</h3>
         <p className="text-sm text-gray-600 mt-1">{body}</p>
 
-        {user_role === "owner" && (
+        {(user_role === "owner" || user_role === "staff") && (
           <button className="mt-3 px-3 py-1.5 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700"
             onClick={handleDelete}
             disabled  = {loading || pending}

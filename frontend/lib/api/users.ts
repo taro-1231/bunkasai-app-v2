@@ -75,36 +75,28 @@ export async function createUser(
     return null;
 
   }
-  // console.log('createUser!!!');
-  // const data = await apiFetch(`/${tenant}/users`, {
-  //   method: "POST",
-  //   // headers: {
-  //   //   "Authorization": `Bearer ${token}`,
-  //   // },
-  //   body: JSON.stringify(payload),
-  // });
-  // const user = createUserSchema.parse(data);
-  // if (user.tenant !== tenant) throw new Error("Cross-tenant data detected");
-  // return user;
 }
 
 
-// export async function createUserAction(tenant: string, formData: FormData) {
-//   const username = formData.get('username') as string;
-//   const password = formData.get('password') as string;
-//   const role = formData.get('role') as string;
-//   const belong = formData.get('belong') as string;
-//   const payload = {username, password, role, belong};
-//   console.log('payload',payload);
-//   try {
-//     const user = await createUser(tenant, payload);
-//     console.log('user',user);
-//     return user;
-//   } catch (error) {
-//     console.error('createUserAction error:', error);
-//     return {error: 'createUserAction error:' + error};
-//   }
-
-  // console.log('createUserAction!!!');
-  // return {message: 'createUserAction!!!'};
-// }
+export async function deleteUser(
+  tenant: string,
+  user_id : string,
+  // payload: createBoothModel
+): Promise<void> {
+  try{
+    const token = (await cookies()).get("access_token")?.value;
+    if (!token) {
+      throw new Error("認証トークンが見つかりません。ログインしてください。");
+    }
+    const data = await apiFetch<unknown>(`/${tenant}/users/${user_id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    
+  }catch(error){
+    console.error('createBooth error:', error);
+    throw error;
+  }
+}

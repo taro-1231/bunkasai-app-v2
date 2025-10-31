@@ -7,11 +7,11 @@ import CreateAnnouncementModal from "../_components/CreateAnnouncementModal";
 import CreateBoothModal from "../_components/CreateBoothModal";
 import CreateEventModal from "../_components/CreateEventModal";
 import { listUsers } from "@/lib/api/users";
-import { UserModel } from "@/lib/api/users";
+import { UserModel,deleteUser } from "@/lib/api/users";
 
 
 
-export default async function logout(
+export default async function maintenance(
     {params}: {params: Promise<{tenant: string}>}) {
       const { tenant }= await params;
       const user = await apime(tenant);
@@ -25,7 +25,12 @@ export default async function logout(
         const cookieStore = await cookies();
         cookieStore.delete('access_token');
           redirect(`/${tenant}`);
-      
+      }
+      async function deleteUserAction(user_id: string){
+        'use server';
+        await deleteUser(tenant, user_id)
+        redirect(`/${tenant}/maintenance`);
+
       }
 
       const users = await listUsers(tenant) as UserModel[];
@@ -48,12 +53,29 @@ export default async function logout(
                       {users.map((u) => (
                         <div
                           key={u.id}
-                          className="rounded-md border px-3 py-2 text-sm text-gray-700 bg-gray-50"
+                          className="flex justify-between rounded-md border px-3 py-2 text-sm text-gray-700 bg-gray-50"
                         >
-                          <span className="text-gray-800">{u.username}</span>
-                          <span className='ml-2 inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700'>
-                            {u.role}
-                          </span>
+                          <div className="py-1"> 
+                            <span className="text-gray-800">{u.username}</span>
+                            <span className='ml-2 inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700'>
+                              {u.role}
+                            </span>
+                          </div>
+                            
+                          {u.role !== 'owner' && (
+                          <form
+                            key={u.id}
+                            action={async () => {
+                              "use server";
+                              await deleteUserAction(u.id);
+                            }}
+                          >
+                            <button className="px-2 py-1 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700">
+                              削除
+                            </button>
+                          </form>   
+                          )}
+                       
                         </div>
 
                       ))}
@@ -96,7 +118,7 @@ export default async function logout(
                     <CreateEventModal tenant={tenant} />
                   </div>
                 </div>
-              ) : user.role === "vendor" ? (
+              ) : user.role === "vender" ? (
                 <div>
                   <h2 className="font-semibold text-lg text-gray-700 mb-2">
                     ブース作成

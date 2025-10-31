@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 export default async function login(
     {params}: {params: Promise<{tenant: string}>}) {
       const { tenant }= await params;
-      const user = await apime(tenant);
+      // const user = await apime(tenant);
       // console.log('user',user);
 
       async function loginAction(formData: FormData): Promise<void> {

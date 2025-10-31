@@ -17,18 +17,20 @@ const EventSchema = z.object({
 export type EventModel = z.infer<typeof EventSchema>;
 
 export async function listEvents(tenant: string | null) {
-  if (!tenant) 
+  if (!tenant) {
     tenant = getTenantFromBrowser();
-
+  }
   const data = await apiFetch<unknown>(`/${tenant}/events`);
   const arr = z.array(EventSchema).parse(data);
+  return arr;
+
+  
   // 念のため交差テナント混入を検知 
   //一旦後で
   // if (arr.some(e => e.tenant !== tenant)) {
   //   throw new Error("Cross-tenant data detected");
   // }
   // console.log(arr);
-  return arr;
 }
 
 export async function getEvent(tenant: string, id: string | number) {

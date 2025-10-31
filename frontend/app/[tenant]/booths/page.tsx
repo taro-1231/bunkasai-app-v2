@@ -40,8 +40,8 @@ export default async function booths(
           location={b.location} 
           belong={b.belong} 
           summary={b.summary} 
-          open_from={b.open_from?.toISOString() ?? ""} 
-          open_to={b.open_to?.toISOString() ?? ""} 
+          open_from={b.open_from? new Date(b.open_from).toISOString() : ""} 
+          open_to={b.open_to? new Date(b.open_to).toISOString() : ""} 
           desc={b.description_md ?? ""}
           user_role= {user ? user.role : ''}
           tenant = {tenant}

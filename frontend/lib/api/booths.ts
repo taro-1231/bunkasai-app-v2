@@ -12,7 +12,7 @@ const BoothSchema = z.object({
   location: z.string(),
   belong: z.string(),
   summary: z.string(),
-  description_md: z.string().optional(),
+  description_md: z.string().nullable().optional(),
   open_from: z.coerce.date(),
   open_to: z.coerce.date(),
 });
@@ -25,12 +25,9 @@ export async function listBooths(tenant: string | null) {
     tenant = getTenantFromBrowser();
 
   const data = await apiFetch<unknown>(`/${tenant}/booths`);
+  // console.log('data')  
+  // console.log(data)
   const arr = z.array(BoothSchema).parse(data);
-  // 念のため交差テナント混入を検知 
-  //一旦後で
-  // if (arr.some(e => e.tenant !== tenant)) {
-  //   throw new Error("Cross-tenant data detected");
-  // }
   return arr;
 }
 

@@ -46,6 +46,8 @@ export async function createEventAction(tenant: string, formData: FormData) {
     const payload = {event_name, location, start_at, end_at, description};
     // console.log('payload',payload);
     try {
+      console.log(payload)
+
       const event = await createEvent(tenant, payload);
     //   console.log('event',event);
       return event;
@@ -81,6 +83,7 @@ export async function createBoothAction(tenant: string, formData: FormData) {
     const payload = {booth_name, belong, location, summary, description_md, open_from, open_to};
     // console.log('payload',payload);
     try {
+      console.log(payload)
       const booth = await createBooth(tenant, payload);
     //   console.log('booth',booth);
       return booth;

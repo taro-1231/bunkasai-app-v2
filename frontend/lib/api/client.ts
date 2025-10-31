@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 
 // process.env.環境変数　で環境変数を取得
 // ??はnullやundefinedの場合のデフォルト値
@@ -17,8 +18,9 @@ import { redirect } from "next/navigation";
 //Optionsはいったん？で継承先で選択する
 
 export class ApiError extends Error {
-    constructor(public status: number, public body: unknown) {
-      super(`API ${status}`);
+    constructor(public status: number, public body: unknown) {      
+      super(`API ${status} ${body}`);
+
     }
   }
   
@@ -72,6 +74,11 @@ export async function apiFetch<T = unknown>(path: string, opts: Options = {}) {
   if (res.status === 409){
     throw new ApiError(res.status, body);
   }
+  // 権限なし
+  if (res.status === 403){
+    // console.log(res.status)
+    throw new ApiError(res.status, body);
+  } 
 
   if (!res.ok) throw new ApiError(res.status, body);
 

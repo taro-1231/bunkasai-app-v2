@@ -7,7 +7,15 @@ interface NavigationProps {
 }
 
 export default async function Navigation({ tenant }: NavigationProps) {
+    // try{
+    //     const user = await apime(tenant);
+
+    // }catch(error){
+    // }
     const user = await apime(tenant);
+
+    // console.log('useruser')
+    // console.log(user)
     // const cookieStore = await cookies();
     // cookieStore.delete('access_token');
 
