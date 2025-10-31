@@ -53,9 +53,9 @@ class BoothCreate(BaseModel):
     belong: str
     location: str
     summary: str
-    description_md: str | None
-    open_from: datetime | None
-    open_to: datetime | None
+    description_md: str | None = None
+    open_from: datetime | None = None
+    open_to: datetime | None = None
 
 # イベント
 class EventCreate(BaseModel):

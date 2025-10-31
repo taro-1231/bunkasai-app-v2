@@ -38,6 +38,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         status_code=HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
     )
+    # print('aa')
     try:
         #JWT.decodeでexpireを自動でチェック
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -45,11 +46,13 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         tenant_id = payload.get("tenant_id")
         role = payload.get("role")
         user = db.query(User).filter(User.id == user_id, User.tenant_id == tenant_id).one_or_none()
-        if user is None:
-            return credentials_exception
-        print('hello')
+        # print('AAA')
+        # if user is None:
+            # print('aaa')
+            # return credentials_exception
         return user
     except JWTError:
+        # return credentials_exception 
         raise credentials_exception
 
 def authenticate_user(username:str, password:str, tenant_id:str, db: Session = Depends(get_db)):
@@ -85,8 +88,9 @@ def logout(response: Response):
 
 @router.get('/me', response_model=UserRead)
 def me(tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user)):
+    print(user)
     if user is None:
         return None
     if user.tenant_id != tenant.id:
-        return None
+        raise HTTPException(status_code = 498,detail = 'diff token')
     return user
