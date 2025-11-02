@@ -23,6 +23,12 @@ URL: https://bunkasai-app-v2.vercel.app
 ### Infra: Render/ Vercel  
 
 
+## 課題・改善 
+### SSEによりリアルタイム更新へ
+### エラー処理のあまいところがある
+### テナントの削除
+### 料金プラン
+### デザインの改良
 
 ## ローカル実行(powershell)
 ```powershell
