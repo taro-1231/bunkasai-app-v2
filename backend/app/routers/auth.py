@@ -91,6 +91,6 @@ def me(tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_curren
     print(user)
     if user is None:
         return None
-    if user.tenant_id != tenant.id:
-        raise HTTPException(status_code = 498,detail = 'diff token')
+    # if user.tenant_id != tenant.id:
+    #     raise HTTPException(status_code = 498,detail = 'diff token')
     return user
