@@ -15,17 +15,17 @@ router = APIRouter(prefix='/api/v2/tenants/{slug}/users')
 def get_all_users(tenant: Tenant = Depends(resolve_tenant), db: Session = Depends(get_db)):
     users = db.query(User).filter(User.tenant_id == tenant.id).all()
     
-    update = 0
-    for user in users:
-        print(user.password_hash)
-        if not pwd_ctx.identify(user.password_hash):
-            print(pwd_ctx.identify(user.password_hash))
-            user.password_hash = hash_password(user.password_hash)
-            update += 1
-            print(user.password_hash)
-    if update >= 1:
-        print('hash! ')
-        db.commit()
+    # update = 0
+    # for user in users:
+    #     print(user.password_hash)
+    #     if not pwd_ctx.identify(user.password_hash):
+    #         print(pwd_ctx.identify(user.password_hash))
+    #         user.password_hash = hash_password(user.password_hash)
+    #         update += 1
+    #         print(user.password_hash)
+    # if update >= 1:
+    #     print('hash! ')
+    #     db.commit()
     return users
 
 @router.post('/', response_model=UserRead)
