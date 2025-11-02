@@ -2,7 +2,8 @@
 文化祭の出店・スタッフ管理を行うためのWebアプリケーションです。  
 FastAPI（バックエンド）と Next.js（フロントエンド）で構築されています。
 
-URL: https://bunkasai-app-v2.vercel.app
+URL: https://bunkasai-app-v2.vercel.app  
+
 
 ## 機能
 - 出店、イベント、アナウンス管理
