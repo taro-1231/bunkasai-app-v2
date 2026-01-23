@@ -8,9 +8,7 @@ export default async function TenantLayout({
     children: React.ReactNode;
     params: Promise<{ tenant: string }>;
   }) {
-    const { tenant } = await params;        // v15: await 必須
-    // 例: サーバーでテナント情報をfetch（RSCなのでOK）
-    // const info = await fetch(`${API}/tenants/${tenant}`, { cache: "no-store" }).then(r => r.json());
+    const { tenant } = await params;   
   
     return (
       <section>

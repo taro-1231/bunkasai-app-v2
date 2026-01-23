@@ -8,6 +8,7 @@ import CreateBoothModal from "../_components/CreateBoothModal";
 import CreateEventModal from "../_components/CreateEventModal";
 import { listUsers } from "@/lib/api/users";
 import { UserModel,deleteUser } from "@/lib/api/users";
+import CreateCheckoutModal from "../_components/CreateCheckoutmodal";
 
 
 
@@ -46,6 +47,13 @@ export default async function maintenance(
       
               {user.role === "owner" ? (
                 <div className="space-y-6">
+                  <div>
+                    <h2 className="font-semibold text-lg text-gray-700 mb-2">
+                      プラン変更
+                    </h2>
+                    <CreateCheckoutModal tenant={tenant} />
+                  </div>
+
                   <div className="space-y-2">
                     <h2 className="font-semibold text-lg text-gray-700">ユーザー管理</h2>
                     <CreateUserModal tenant={tenant} />

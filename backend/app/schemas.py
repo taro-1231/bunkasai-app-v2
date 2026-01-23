@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
+from typing import Literal
 
 # テナント
 class TenantBase(BaseModel):
@@ -82,3 +83,12 @@ class PhotoRead(BaseModel):
     
     class Config:
         from_attributes = True
+
+class checkoutModel(BaseModel):
+    plan: Literal["free", "plus", "unlimited"]
+    days: int
+    class Config:
+        from_attributes = True
+
+class Checkouturl(BaseModel):
+    url: str

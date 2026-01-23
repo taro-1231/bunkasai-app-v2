@@ -4,6 +4,8 @@ import { createEvent } from "../api/events";
 import { createAnnouncement } from "../api/announcements";
 import { createBooth } from "../api/booths";
 import { postPhoto } from "../api/photos";
+import { checkout } from "../api/checkout";
+import { z } from "zod";
 
 function toDateOrUndef(v: FormDataEntryValue | null): Date | undefined {
     if (typeof v !== "string" || v.trim() === "") return undefined; // null/空文字は undefined に
@@ -46,7 +48,7 @@ export async function createEventAction(tenant: string, formData: FormData) {
     const payload = {event_name, location, start_at, end_at, description};
     // console.log('payload',payload);
     try {
-      console.log(payload)
+      // console.log(payload)
 
       const event = await createEvent(tenant, payload);
     //   console.log('event',event);
@@ -83,7 +85,6 @@ export async function createBoothAction(tenant: string, formData: FormData) {
     const payload = {booth_name, belong, location, summary, description_md, open_from, open_to};
     // console.log('payload',payload);
     try {
-      console.log(payload)
       const booth = await createBooth(tenant, payload);
     //   console.log('booth',booth);
       return booth;
@@ -108,4 +109,31 @@ export async function postPhotoAction(tenant: string, file: File) {
         console.error('postPhotoAction error:', error);
         return {error: 'postPhotoAction error:' + error};
     }
+}
+
+
+const checkoutSchema = z.object({
+  plan: z.enum(["free", "plus", "unlimited"]),
+  days: z.coerce.number().int().min(1).max(30),
+});
+export type checkoutModel = z.infer<typeof checkoutSchema>;
+export async function checkoutAction(tenant: string, formData: FormData) {
+  const payload = {
+    plan: formData.get("plan"),
+    days: formData.get("days"),
+  };
+
+  const parsed = checkoutSchema.safeParse(payload);
+  if (!parsed.success) {
+    return {
+      error: "入力が不正です",
+    };
+  }
+  try {
+    const url = await checkout(tenant, parsed.data);
+    return url;
+  } catch (error: any) {
+    console.error("checkoutAction error:", error);
+    return { error: "checkoutAction error: " + (error?.message ?? String(error)) };
+  }
 }

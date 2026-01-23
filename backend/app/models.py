@@ -4,9 +4,16 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import func
 from sqlalchemy import Column, String, Text, DateTime, Boolean, ForeignKey
 from datetime import datetime, timezone
+import enum
+from sqlalchemy import Enum
 
 def uuid_str() -> str:
     return str(uuid4())
+
+class Plan(enum.Enum):
+    free = "free"
+    plus = "plus"
+    unlimited = "unlimited"
 
 # 検索はslugからidを取得してidを使用する
 class Tenant(Base):
@@ -15,6 +22,7 @@ class Tenant(Base):
     school_name: Mapped[str] = mapped_column(String)
     slug: Mapped[str] = mapped_column(String, unique=True, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    plan: Mapped[Plan] = mapped_column( Enum(Plan, name="plan_enum"), default=Plan.free, nullable=False,)
 
 
 class User(Base):

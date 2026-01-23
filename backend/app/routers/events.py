@@ -1,7 +1,6 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Depends
 from app.db import get_db
 from sqlalchemy.orm import Session
-from fastapi import Depends
 from app.models import Event, Tenant, User
 from app.routers.auth import get_current_user
 from app.routers.tenants import resolve_tenant

@@ -27,7 +27,6 @@ def register(body: TenantOwnerCreate, db: Session = Depends(get_db)):
             status_code=409,
             detail="このURLは既に使われています。"
         )
-    print('tenant_name')
     print(body.tenant)
     tenant = Tenant(slug=body.tenant_slug, school_name=body.tenant)
     db.add(tenant)
