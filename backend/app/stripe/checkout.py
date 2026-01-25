@@ -20,7 +20,7 @@ router = APIRouter(prefix='/api/v2/tenants/{slug}/checkout')
 def calc_amount_jpy(days: int, plan_type: tenant_plan_type):
     return PRICE_PER_DAY[plan_type] * days
 
-def stripe_checkout(plan_type: tenant_plan_type, days:int, amount: int, tenant_id: str):
+def stripe_checkout(plan_type: tenant_plan_type, days:int, amount: int, tenant_id: str, slug: str):
     session = stripe.checkout.Session.create(
         mode= 'payment',
         line_items = [{
@@ -36,8 +36,8 @@ def stripe_checkout(plan_type: tenant_plan_type, days:int, amount: int, tenant_i
             "days": str(days),
             "tier": plan_type,
         },
-        success_url= BASE_PATH +"/billing/complete?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url=f"{BASE_PATH}/billing/cancel",
+        success_url=f"{BASE_PATH}/{slug}/billing/complete?session_id={{CHECKOUT_SESSION_ID}}",
+        cancel_url=f"{BASE_PATH}/{slug}/billing/cancel",
     )
     return Checkouturl(url=session.url)
 
@@ -54,7 +54,7 @@ def checkout(body: checkoutModel, tenant: Tenant = Depends(resolve_tenant), user
 
     amount = calc_amount_jpy(body.days, body.plan_type)
     # stripe処理
-    url = stripe_checkout(body.plan_type, body.days, amount, tenant.id)
+    url = stripe_checkout(body.plan_type, body.days, amount, tenant.id, slug=tenant.slug)
     return url
 
     
