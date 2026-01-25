@@ -9,9 +9,10 @@ URL: https://bunkasai-app-v2.vercel.app
 - 出店、イベント、アナウンス管理
 - スタッフアカウント（オーナー、スタッフ、出店者）管理
 - 写真アップロード
--  ログイン認証
--学校ごとの登録
-
+- ログイン認証
+- 学校ごとの登録
+- プラン選択
+- 決済
 
 ## 使用技術と採用理由  
 ### Backend: python, FastAPI, SQLAlchemy, PostgreSQL
@@ -20,15 +21,11 @@ URL: https://bunkasai-app-v2.vercel.app
 ### Frontend: TypeScript, Tailwind CSS, Next.js   
 - 型定義で通信の失敗を防げるなど、リアルタイムでの通信をしやすい
 - 画像アップロード中の状態遷移などを型で守れる
-### Infra: Render/ Vercel  
+### Infra: Render, Vercel, stripe
 
 
 ## 課題・改善 
-- SSEによりリアルタイム更新へ
-- エラー処理のあまいところがある
-- テナントの削除
-- 料金プラン
-- デザインの改良
+- SSEによりリアルタイム更新
 
 ## ローカル実行(powershell)
 ```powershell
@@ -42,4 +39,8 @@ uvicorn app.main:app --reload
 
 cd frontend
 npm run dev
+
+stripe login
+stripe listen --forward-to localhost:8000/api/stripe/webhook
+.envにSTRIPE_WEBHOOK_SECRET
 
