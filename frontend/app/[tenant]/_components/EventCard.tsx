@@ -38,11 +38,15 @@ export default function EventCard(
         <h3 className="text-lg font-semibold">イベント名： {event_name}</h3>
         <p className="text-sm text-gray-600 mt-1">詳細： {description}</p>
         <p className="text-sm text-gray-600 mt-1">場所： {location}</p>
-        {start_at !== '1970/1/1 9:00:00' && (
+        {start_at === '1970/1/1 9:00:00' ? (
+          <p className="text-sm text-gray-600 mt-1">開始時間： ー</p>
+        ) : (
           <p className="text-sm text-gray-600 mt-1">開始時間： {start_at}</p>
-
         )}
-        {end_at !== '1970/1/1 9:00:00' && (
+
+        {end_at === '1970/1/1 9:00:00' ? (
+          <p className="text-sm text-gray-600 mt-1">終了時間： ー</p>
+        ) : (
           <p className="text-sm text-gray-600 mt-1">終了時間： {end_at}</p>
 
         )}

@@ -39,11 +39,14 @@ export default function BoothCard({booth_id, name, location, belong, summary, op
         <p className="text-sm text-gray-600 mt-1">場所： {location}</p>
         <p className="text-sm text-gray-600 mt-1">所属： {belong}</p>
         <p className="text-sm text-gray-600 mt-1">{summary}</p>
-        {open_from !== '1970/1/1 9:00:00' && (
+        {open_from === '1970/1/1 9:00:00' ? (
+          <p className="text-sm text-gray-600 mt-1">開始時間： ー</p>
+        ) : (
           <p className="text-sm text-gray-600 mt-1">開始時間： {open_from}</p>
-
         )}
-        {open_to !== '1970/1/1 9:00:00' && (
+        {open_to === '1970/1/1 9:00:00' ? (
+          <p className="text-sm text-gray-600 mt-1">終了時間： ー</p>
+        ) : (
           <p className="text-sm text-gray-600 mt-1">終了時間： {open_to}</p>
 
         )}

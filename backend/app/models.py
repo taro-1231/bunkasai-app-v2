@@ -5,15 +5,12 @@ from sqlalchemy import func
 from sqlalchemy import Column, String, Text, DateTime, Boolean, ForeignKey
 from datetime import datetime, timezone
 import enum
+from app.schemas import tenant_plan_type
 from sqlalchemy import Enum
 
 def uuid_str() -> str:
     return str(uuid4())
 
-class Plan(enum.Enum):
-    free = "free"
-    plus = "plus"
-    unlimited = "unlimited"
 
 # 検索はslugからidを取得してidを使用する
 class Tenant(Base):
@@ -22,7 +19,11 @@ class Tenant(Base):
     school_name: Mapped[str] = mapped_column(String)
     slug: Mapped[str] = mapped_column(String, unique=True, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
-    plan: Mapped[Plan] = mapped_column( Enum(Plan, name="plan_enum"), default=Plan.free, nullable=False,)
+    plan_type: Mapped[tenant_plan_type] = mapped_column( Enum(tenant_plan_type, name="plan_enum"), default=tenant_plan_type.free, nullable=False,)
+
+    valid_from: Mapped[datetime | None] = mapped_column(DateTime(timezone=True)) # plan == freeのときはNone
+    valid_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    last_checkout_session_id: Mapped[str | None] = mapped_column(String) #複数回のwebhook用
 
 
 class User(Base):

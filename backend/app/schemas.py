@@ -1,7 +1,9 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from datetime import datetime
 from typing import Literal
+from enum import Enum
 
+# BaseModelはJSON構造を作る
 # テナント
 class TenantBase(BaseModel):
     slug: str
@@ -85,10 +87,16 @@ class PhotoRead(BaseModel):
         from_attributes = True
 
 class checkoutModel(BaseModel):
-    plan: Literal["free", "plus", "unlimited"]
+    # 互換性のため、フロントが送る `plan` も受け付ける
+    model_config = ConfigDict(populate_by_name=True)
+
+    plan_type: Literal["free", "plus", "unlimited"] = Field(..., alias="plan")
     days: int
-    class Config:
-        from_attributes = True
 
 class Checkouturl(BaseModel):
     url: str
+
+class tenant_plan_type(str, Enum):
+    free = "free"
+    plus = "plus"
+    unlimited = "unlimited"

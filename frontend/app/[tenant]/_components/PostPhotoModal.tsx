@@ -30,17 +30,6 @@ export default function PostPhotoModal({ tenant }: { tenant: string }) {
     }
   }
 
-  // async function onSubmit(formData: FormData) {
-  //   setLoading(true);
-
-  //   const res = await postPhotoAction(tenant, formData.get('file') as File);
-
-  //   setOpen(false);
-
-  //   router.refresh();
-  //   setLoading(false)
-  // }
-
 
   return (
     <>

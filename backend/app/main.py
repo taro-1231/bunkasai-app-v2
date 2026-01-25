@@ -8,7 +8,7 @@ from .db import Base, engine
 from fastapi.staticfiles import StaticFiles
 from .config import ALLOWED_ORIGINS
 import os
-from .stripe import checkout
+from .stripe import checkout, webhook
 
 app = FastAPI(title="bunkasai-app-API", version="0.1.0")
 app.include_router(health.router)
@@ -21,6 +21,7 @@ app.include_router(booths.router)
 app.include_router(announcements.router)
 app.include_router(photos.router)
 app.include_router(checkout.router)
+app.include_router(webhook.router)
 
 # このURLがきたらmediaフォルダを返す
 app.mount("/backend/media", StaticFiles(directory="media"), name="backend-media")

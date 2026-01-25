@@ -52,7 +52,6 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
             # return credentials_exception
         return user
     except JWTError:
-        # return credentials_exception 
         raise credentials_exception
 
 def authenticate_user(username:str, password:str, tenant_id:str, db: Session = Depends(get_db)):
@@ -82,13 +81,13 @@ def login(body: LoginRequest, tenant: Tenant = Depends(resolve_tenant), db: Sess
 @router.post('/logout')
 def logout(response: Response):
     response.delete_cookie(key="access_token")
-    print("Logged out successfully")
+    # print("Logged out successfully")
     return {"message": "Logged out successfully"}
 
 
 @router.get('/me', response_model=UserRead)
 def me(tenant: Tenant = Depends(resolve_tenant), user: User = Depends(get_current_user)):
-    print(user)
+    # print(user)
     if user is None:
         return None
     # if user.tenant_id != tenant.id:
